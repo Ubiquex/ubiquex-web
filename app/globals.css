@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+/*
+ * Ubiquex design tokens.
+ *
+ * Tailwind v4 is CSS-first: this @theme block is the theme configuration —
+ * it is the v4 equivalent of `theme.extend.colors` in a v3 tailwind.config.js.
+ * Every entry below becomes a real named utility (bg-brand, text-accent-bright,
+ * border-edge, ...), so nothing in this codebase should use a raw hex value.
+ */
+@theme {
+  /* Persian green — primary */
+  --color-brand: #00a693;
+  --color-brand-bright: #00c4ae;
+
+  /* Persian blue — secondary, links */
+  --color-accent: #1c39bb;
+  --color-accent-bright: #4b5fd4;
+
+  /* Persian red — errors, CTAs */
+  --color-highlight: #cc2936;
+  --color-highlight-bright: #e8404e;
+
+  /* Dark surfaces */
+  --color-ink: #0d1117; /* page background */
+  --color-panel: #161b22; /* cards, raised surfaces */
+  --color-edge: #21262d; /* hairline borders */
+
+  /* Foreground */
+  --color-fg: #e6edf3; /* body text */
+  --color-fg-muted: #8b949e; /* secondary text */
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-fg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Keyboard focus ring, in brand color, applied globally. */
+:focus-visible {
+  outline: 2px solid var(--color-brand-bright);
+  outline-offset: 2px;
+}

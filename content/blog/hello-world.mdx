@@ -1,0 +1,32 @@
+---
+title: "Hello, world"
+date: "2026-08-15"
+description: "A placeholder post, here to prove the MDX pipeline builds end to end."
+---
+
+This post exists to verify the content pipeline: an MDX file in `content/blog/`
+is picked up by the blog index, gets its own statically exported page, and
+renders through the shared element styling in `mdx-components.tsx`.
+
+## What is wired up
+
+- Frontmatter (`title`, `date`, `description`) is parsed in `lib/posts.ts`,
+  which is the single source of truth for post metadata.
+- The body is compiled by `@next/mdx` at build time — there is no runtime MDX
+  compiler and no CMS.
+- `generateStaticParams` enumerates every `.mdx` file, so `next build` emits one
+  HTML file per post.
+
+## Formatting check
+
+Inline `code`, a [link](/blog), and **bold text** all pick up the design tokens.
+
+```ts
+export function ledgerHash(proposal: Proposal): string {
+  return sha256(canonicalize(proposal));
+}
+```
+
+> Files, diagrams, chat, and docs are projections. The ledger is authoritative.
+
+Replace this file with the first real post.

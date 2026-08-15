@@ -65,9 +65,12 @@ sorted by `date`, newest first, and the filename becomes the URL slug.
 `out/` to GitHub Pages. Enable it under **Settings → Pages → Source: GitHub
 Actions**.
 
-No custom domain is configured yet. Two things to check at cutover:
+Live at <https://ubiquex.github.io/ubiquex-web/>.
 
-- If the site is served from a project page (`<org>.github.io/ubiquex-web`)
-  rather than a custom domain, set `basePath` in `next.config.mjs` or every
-  asset URL will 404.
-- A custom domain needs a `CNAME` file in `public/`, so it lands in the export.
+No custom domain is configured yet. Two things to do at cutover:
+
+- **Remove `basePath: "/ubiquex-web"` from `next.config.mjs`.** It is required
+  while the site is served from a project page — without it every CSS and JS URL
+  404s — but on an apex domain it would prepend a bogus `/ubiquex-web` segment to
+  every URL.
+- Add a `CNAME` file to `public/`, so it lands in the export.

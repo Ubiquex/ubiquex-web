@@ -5,13 +5,18 @@
  *
  * Tailwind v4 is CSS-first: this @theme block is the theme configuration —
  * it is the v4 equivalent of `theme.extend.colors` in a v3 tailwind.config.js.
- * Every entry below becomes a real named utility (bg-brand, text-accent-bright,
- * border-edge, ...), so nothing in this codebase should use a raw hex value.
+ * Every entry below becomes a real named utility (bg-ink, text-primary,
+ * border-line, ...), so nothing in this codebase should use a raw hex value.
+ *
+ * Naming note: the utility prefix is added by Tailwind, so the token is named
+ * for the *role*, not the utility — `--color-primary` yields `text-primary`,
+ * `--color-line` yields `border-line`. Naming it `--color-text-primary` would
+ * produce the doubled `text-text-primary`.
  */
 @theme {
-  /* Persian green — primary */
+  /* Persian green — logo, primary button */
   --color-brand: #00a693;
-  --color-brand-bright: #00c4ae;
+  --color-brand-bright: #00c4ae; /* accent text, highlights */
 
   /* Persian blue — secondary, links */
   --color-accent: #1c39bb;
@@ -23,12 +28,26 @@
 
   /* Dark surfaces */
   --color-ink: #0d1117; /* page background */
-  --color-panel: #161b22; /* cards, raised surfaces */
-  --color-edge: #21262d; /* hairline borders */
+  --color-panel: #13161d; /* code panel background */
+  --color-line: #1e2530; /* hairline borders */
 
   /* Foreground */
-  --color-fg: #e6edf3; /* body text */
-  --color-fg-muted: #8b949e; /* secondary text */
+  --color-primary: #f0f6fc; /* body text */
+  --color-muted: #8b949e; /* secondary text */
+  --color-dim: #6e7681; /* tertiary text, labels */
+
+  /* Plan-panel syntax accents. Named for role so PlanPanel carries no raw hex. */
+  --color-diff-add: #3fb950; /* + markers */
+  --color-resource: #79c0ff; /* resource type names */
+  --color-cost: #e6b450; /* cost delta */
+  --color-rule: #20242e; /* in-panel divider */
+  --color-badge-bg: #0d2420; /* signed badge background */
+  --color-dot-red: #ff5f57;
+  --color-dot-amber: #febc2e;
+  --color-dot-green: #28c840;
+
+  /* Nav collapses to the mobile layout below this width. */
+  --breakpoint-menu: 860px;
 
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
@@ -43,7 +62,7 @@ html {
 
 body {
   background-color: var(--color-ink);
-  color: var(--color-fg);
+  color: var(--color-primary);
   -webkit-font-smoothing: antialiased;
 }
 

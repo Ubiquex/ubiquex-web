@@ -8,7 +8,7 @@ type CardProps = {
   href?: string;
 };
 
-const base = "block rounded-lg border border-edge bg-panel p-6";
+const base = "block rounded-lg border border-line bg-panel p-6";
 const interactive =
   "transition-colors duration-150 hover:border-brand focus-visible:border-brand";
 

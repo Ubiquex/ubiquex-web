@@ -10,9 +10,9 @@ const base =
 
 const variants: Record<Variant, string> = {
   primary: "bg-brand text-ink hover:bg-brand-bright",
-  secondary: "bg-accent text-fg hover:bg-accent-bright",
-  cta: "bg-highlight text-fg hover:bg-highlight-bright",
-  ghost: "border border-edge text-fg hover:border-brand hover:text-brand-bright",
+  secondary: "bg-accent text-primary hover:bg-accent-bright",
+  cta: "bg-highlight text-primary hover:bg-highlight-bright",
+  ghost: "border border-line text-primary hover:border-brand hover:text-brand-bright",
 };
 
 const sizes: Record<Size, string> = {

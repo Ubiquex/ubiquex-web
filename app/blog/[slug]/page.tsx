@@ -44,19 +44,19 @@ export default async function BlogPostPage({
         <header className="mb-10">
           <time
             dateTime={post.date}
-            className="font-mono text-xs tracking-wide text-fg-muted uppercase"
+            className="font-mono text-xs tracking-wide text-muted uppercase"
           >
             {formatDate(post.date)}
           </time>
-          <h1 className="mt-3 text-4xl font-semibold tracking-tight text-fg">
+          <h1 className="mt-3 text-4xl font-semibold tracking-tight text-primary">
             {post.title}
           </h1>
-          <p className="mt-4 text-lg text-fg-muted">{post.description}</p>
+          <p className="mt-4 text-lg text-muted">{post.description}</p>
         </header>
 
         <PostBody />
 
-        <footer className="mt-16 border-t border-edge pt-8">
+        <footer className="mt-16 border-t border-line pt-8">
           <Link
             href="/blog"
             className="text-sm text-accent-bright hover:text-brand-bright"

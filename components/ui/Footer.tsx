@@ -6,18 +6,18 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-24 border-t border-edge">
+    <footer className="mt-24 border-t border-line">
       <Container>
-        <div className="flex flex-col gap-4 py-10 text-sm text-fg-muted sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 py-10 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
           <p>&copy; {year} Ubiquex</p>
 
           <nav className="flex gap-6">
-            <Link href="/blog" className="hover:text-fg">
+            <Link href="/blog" className="hover:text-primary">
               Blog
             </Link>
             <a
               href="https://github.com/Ubiquex"
-              className="hover:text-fg"
+              className="hover:text-primary"
               rel="noreferrer"
             >
               GitHub

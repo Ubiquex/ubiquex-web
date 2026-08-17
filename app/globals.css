@@ -46,6 +46,16 @@
   --color-dot-amber: #febc2e;
   --color-dot-green: #28c840;
 
+  /* Markdown-document syntax tones. The remaining tones in that document reuse
+     existing tokens exactly: fences are --color-dim, the h1 is --color-primary,
+     and @refs are --color-brand-bright. */
+  --color-md-key: #c586c0; /* frontmatter keys */
+  --color-md-value: #ce9178; /* frontmatter values */
+  --color-md-heading: #569cd6; /* ## headings */
+  --color-md-text: #c9d1d9; /* body and list lines */
+
+  --color-line-strong: #262b36; /* border one step brighter than --color-line */
+
   /* Nav collapses to the mobile layout below this width. */
   --breakpoint-menu: 860px;
 

@@ -1,3 +1,5 @@
+import { Window } from "./Window";
+
 const resources = [
   { type: "aws_db_instance", name: "main" },
   { type: "aws_sqs_queue", name: "settlements" },
@@ -8,18 +10,7 @@ const resources = [
 /** Static mock of `ubx plan` output. Presentational only — no interactivity. */
 export function PlanPanel() {
   return (
-    <div className="overflow-hidden rounded-xl border border-line bg-panel">
-      <div className="relative flex items-center border-b border-line px-4 py-3">
-        <div className="flex gap-[6px]">
-          <span className="h-[10px] w-[10px] rounded-full bg-dot-red" />
-          <span className="h-[10px] w-[10px] rounded-full bg-dot-amber" />
-          <span className="h-[10px] w-[10px] rounded-full bg-dot-green" />
-        </div>
-        <span className="absolute inset-x-0 text-center font-mono text-[12px] text-dim">
-          ubx plan
-        </span>
-      </div>
-
+    <Window label="ubx plan">
       <div className="px-5 py-[18px] font-mono text-[11.5px] leading-[1.85]">
         <p>
           <span className="text-dim">$</span>{" "}
@@ -67,7 +58,7 @@ export function PlanPanel() {
           </span>
         </div>
       </div>
-    </div>
+    </Window>
   );
 }
 

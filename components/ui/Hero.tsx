@@ -1,6 +1,55 @@
 import { PlanPanel } from "./PlanPanel";
 
 /*
+ * The two hero actions are written out rather than routed through the shared
+ * Button: they differ from it in radius, padding and icon placement, and adding
+ * two single-use variants there would cost more than it saves.
+ */
+const actionBase =
+  "inline-flex items-center gap-[9px] rounded-[10px] border p-[11px_18px] " +
+  "text-[14px] font-semibold whitespace-nowrap transition-colors " +
+  "min-[860px]:p-[12px_22px] min-[860px]:text-[14.5px]";
+
+function DownloadIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M12 3v12" />
+      <path d="M7 11l5 5 5-5" />
+      <path d="M4 19h16" />
+    </svg>
+  );
+}
+
+function ArrowIcon() {
+  return (
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M5 12h13" />
+      <path d="M12 5l7 7-7 7" />
+    </svg>
+  );
+}
+
+/*
  * The hero. Unlike the medium sections, which are top-aligned, the copy column
  * is vertically centred inside its full-height cell: a hero reads better
  * balanced. The grid itself stays on the default stretch so both columns share
@@ -35,6 +84,44 @@ export function Hero() {
             showing exactly what changes, what it costs and what it could break.
             Nothing reaches a provider until a human signs that hash.
           </span>
+        </p>
+
+        {/*
+         * Inside the copy column and after the paragraph, so DOM order matches
+         * the visual order: the panel column comes later in the document, which
+         * keeps tab order running heading, copy, actions, panel.
+         */}
+        <div className="mt-[28px] flex flex-wrap justify-center gap-3 min-[860px]:mt-8 min-[860px]:justify-start">
+          <a
+            href="https://github.com/Ubiquex/ubiquex/releases/latest"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Download ubx, latest release on GitHub"
+            className={`${actionBase} border-brand bg-brand text-[#06120f] hover:bg-brand-bright`}
+          >
+            <DownloadIcon />
+            Download
+          </a>
+
+          <a
+            href="https://docs.ubiquex.io"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Get Started with the Ubiquex documentation"
+            className={`${actionBase} border-[#2a323d] bg-transparent text-[#d6dde5] hover:border-[#3c4552] hover:text-primary`}
+          >
+            Get Started
+            <ArrowIcon />
+          </a>
+        </div>
+
+        {/*
+         * Platform list is what the latest release actually ships: darwin and
+         * linux, each on amd64 and arm64. There is no Windows build, so it is
+         * not claimed here.
+         */}
+        <p className="mt-3 font-mono text-[11px] text-dim">
+          latest release · macOS, Linux
         </p>
       </div>
 

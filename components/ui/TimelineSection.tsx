@@ -150,6 +150,8 @@ const steps: Step[] = [
     pills: ["markdown", "sdk", "diagram", "dialogue"],
     vars: {
       "--step": "#E49B0F",
+      "--card-accent": "#E49B0F",
+      "--card-accent-soft": "rgba(228,155,15,0.35)",
       "--step-bright": "#F0B429",
       "--step-glow": "rgba(228,155,15,0.22)",
       "--step-bloom": "#E49B0F",
@@ -166,6 +168,8 @@ const steps: Step[] = [
     pills: ["live state read", "refs pinned @7fc2", "double-run verified"],
     vars: {
       "--step": "#6D3BC4",
+      "--card-accent": "#8B5CF6",
+      "--card-accent-soft": "rgba(139,92,246,0.35)",
       "--step-bright": "#A98BE8",
       "--step-glow": "rgba(109,59,196,0.26)",
       "--step-bloom": "#6D3BC4",
@@ -183,6 +187,8 @@ const steps: Step[] = [
     pills: ["3 invariants passed", "hash frozen", "stale on drift"],
     vars: {
       "--step": "#1C39BB",
+      "--card-accent": "#4B6BE8",
+      "--card-accent-soft": "rgba(75,107,232,0.35)",
       "--step-bright": "#7C8FE8",
       "--step-glow": "rgba(28,57,187,0.28)",
       "--step-bloom": "#4B5FD4",
@@ -204,6 +210,8 @@ const steps: Step[] = [
     ],
     vars: {
       "--step": "#CC2936",
+      "--card-accent": "#E8404E",
+      "--card-accent-soft": "rgba(232,64,78,0.35)",
       "--step-bright": "#E8404E",
       "--step-glow": "rgba(204,41,54,0.28)",
       "--step-glow-size": "32px",
@@ -221,6 +229,8 @@ const steps: Step[] = [
     pills: ["plugin protocol v6", "no state file", "ledger appended"],
     vars: {
       "--step": "#00A693",
+      "--card-accent": "#00C4AE",
+      "--card-accent-soft": "rgba(0,196,174,0.35)",
       "--step-bright": "#00C4AE",
       "--step-glow": "rgba(0,166,147,0.24)",
       "--step-bloom": "#00A693",
@@ -290,7 +300,7 @@ export function TimelineSection() {
                 {step.n}
               </div>
 
-              <div className="step-card relative overflow-hidden rounded-[16px] border border-[#1d222c] p-[22px_20px_24px] min-[860px]:p-[30px_34px_32px]">
+              <div className="step-card relative overflow-hidden p-[22px_20px_24px] min-[860px]:p-[30px_34px_32px]">
                 <div className="mb-[9px] flex flex-wrap items-baseline gap-3 min-[860px]:mb-3">
                   <h3 className="text-[17.5px] font-bold tracking-[-0.015em] text-[#f5f8fc] min-[860px]:text-[22px]">
                     {step.title}

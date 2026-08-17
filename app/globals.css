@@ -291,18 +291,33 @@ body {
   opacity: 0.15;
 }
 
+/*
+ * The accent wraps the top-left corner rather than sitting on the top edge.
+ *
+ * Two stacked backgrounds: the fill clipped to the padding box, the gradient
+ * clipped to the border box so it shows through a transparent 1px border. Both
+ * clip values and the transparent border are required; drop either and the
+ * gradient floods the whole card. The 135deg angle runs corner to corner, which
+ * is what carries the accent down the left side, and it follows the 16px radius
+ * because it is one border rather than two hairlines meeting at a join.
+ *
+ * --card-accent and --card-accent-soft are set per step on the <li>, the same
+ * way --step and --step-bloom already are.
+ */
 .step-card {
-  background: linear-gradient(160deg, #14181f 0%, #10131a 60%);
-}
-/* Hairline across the top, fading out to the right. */
-.step-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, var(--step), transparent 70%);
+  border: 1px solid transparent;
+  border-radius: 16px;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  background-image:
+    linear-gradient(160deg, #171b23, #12161d),
+    linear-gradient(
+      135deg,
+      var(--card-accent) 0%,
+      var(--card-accent-soft) 18%,
+      #232a35 42%,
+      #232a35 100%
+    );
 }
 /* Corner bloom behind the content. */
 .step-card::after {

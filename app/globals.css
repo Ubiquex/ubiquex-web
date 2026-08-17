@@ -46,13 +46,17 @@
   --color-dot-amber: #febc2e;
   --color-dot-green: #28c840;
 
-  /* Markdown-document syntax tones. The remaining tones in that document reuse
-     existing tokens exactly: fences are --color-dim, the h1 is --color-primary,
-     and @refs are --color-brand-bright. */
-  --color-md-key: #c586c0; /* frontmatter keys */
-  --color-md-value: #ce9178; /* frontmatter values */
-  --color-md-heading: #569cd6; /* ## headings */
-  --color-md-text: #c9d1d9; /* body and list lines */
+  /* Syntax tones, shared by the markdown document and the SDK code samples.
+     Some roles reuse existing tokens exactly rather than duplicate a value:
+     comments and markdown fences are --color-dim, the markdown h1 is
+     --color-primary, and @refs are --color-brand-bright. */
+  --color-code-keyword: #c586c0; /* keywords; markdown frontmatter keys */
+  --color-code-string: #ce9178; /* strings; markdown frontmatter values */
+  --color-code-number: #b5cea8;
+  --color-code-function: #dcdcaa;
+  --color-code-type: #4ec9b0;
+  --color-code-plain: #c9d1d9; /* unhighlighted code; markdown body lines */
+  --color-md-heading: #569cd6; /* markdown ## headings */
 
   --color-line-strong: #262b36; /* border one step brighter than --color-line */
 

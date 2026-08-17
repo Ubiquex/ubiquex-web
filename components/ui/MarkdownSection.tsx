@@ -58,12 +58,12 @@ function PaymentsDocument() {
         <span className="text-dim">{"---"}</span>
       </Line>
       <Line>
-        <span className="text-md-key">{"ubx:"}</span>
-        <span className="text-md-value">{" intent/v1"}</span>
+        <span className="text-code-keyword">{"ubx:"}</span>
+        <span className="text-code-string">{" intent/v1"}</span>
       </Line>
       <Line>
-        <span className="text-md-key">{"stack:"}</span>
-        <span className="text-md-value">{" payments"}</span>
+        <span className="text-code-keyword">{"stack:"}</span>
+        <span className="text-code-string">{" payments"}</span>
       </Line>
       <Line>
         <span className="text-dim">{"---"}</span>
@@ -79,48 +79,48 @@ function PaymentsDocument() {
         <span className="text-md-heading">{"## Goal"}</span>
       </Line>
       <Line>
-        <span className="text-md-text">
+        <span className="text-code-plain">
           {"Postgres for the payments service, modelled on"}
         </span>
       </Line>
       <Line>
-        <span className="text-md-text">
+        <span className="text-code-plain">
           {"staging but roughly half capacity, plus a queue"}
         </span>
       </Line>
       <Line>
-        <span className="text-md-text">{"for settlement jobs."}</span>
+        <span className="text-code-plain">{"for settlement jobs."}</span>
       </Line>
       <Line>{""}</Line>
       <Line>
         <span className="text-md-heading">{"## Requirements"}</span>
       </Line>
       <Line>
-        <span className="text-md-text">
+        <span className="text-code-plain">
           {"- Reachable only from payments, never public"}
         </span>
       </Line>
       <Line>
-        <span className="text-md-text">{"- Data stays in eu-west-1"}</span>
+        <span className="text-code-plain">{"- Data stays in eu-west-1"}</span>
       </Line>
       <Line>
-        <span className="text-md-text">{"- Queue retention ≥ 4 days"}</span>
+        <span className="text-code-plain">{"- Queue retention ≥ 4 days"}</span>
       </Line>
       <Line>
-        <span className="text-md-text">{"- Cost ceiling: $250/month"}</span>
+        <span className="text-code-plain">{"- Cost ceiling: $250/month"}</span>
       </Line>
       <Line>{""}</Line>
       <Line>
         <span className="text-md-heading">{"## References"}</span>
       </Line>
       <Line>
-        <span className="text-md-text">{"- staging db: "}</span>
+        <span className="text-code-plain">{"- staging db: "}</span>
         <span className="text-brand-bright">
           {"@staging.aws_db_instance.main"}
         </span>
       </Line>
       <Line>
-        <span className="text-md-text">{"- network:    "}</span>
+        <span className="text-code-plain">{"- network:    "}</span>
         <span className="text-brand-bright">{"@network.vpc_id"}</span>
       </Line>
     </pre>

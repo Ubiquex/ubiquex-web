@@ -43,7 +43,7 @@ const points: MediumPoint[] = [
 
 function D2Source() {
   return (
-    <pre className="min-h-[262px] overflow-x-auto p-[16px] font-mono text-[11px] leading-[1.8] whitespace-pre text-code-plain min-[860px]:min-h-[316px] min-[860px]:p-[20px_22px] min-[860px]:text-[12.5px]">
+    <pre className="h-full overflow-x-auto p-[16px] font-mono text-[11px] leading-[1.7] whitespace-pre text-code-plain min-[860px]:p-[16px_20px_18px] min-[860px]:text-[12px]">
       <Line>
         <Key t="payments" />
         {": {"}
@@ -62,28 +62,15 @@ function D2Source() {
       </Line>
       <Line>
         {"    "}
-        <Key t="label" />
-        {": "}
-        <Str t={'"aws_db_instance"'} />
-      </Line>
-      <Line>
-        {"    "}
         <Key t="shape" />
         {": "}
         <Shape t="cylinder" />
       </Line>
       <Line>{"  }"}</Line>
-      <Line />
       <Line>
         {"  "}
         <Key t="settlements" />
         {": {"}
-      </Line>
-      <Line>
-        {"    "}
-        <Key t="label" />
-        {": "}
-        <Str t={'"aws_sqs_queue"'} />
       </Line>
       <Line>
         {"    "}
@@ -101,18 +88,7 @@ function D2Source() {
       </Line>
       <Line>{"}"}</Line>
       <Line />
-      <Line>
-        <Key t="network" />
-        {": {"}
-      </Line>
-      <Line>
-        {"  "}
-        <Key t="label" />
-        {": "}
-        <Str t={'"stack: network"'} />
-      </Line>
-      <Line>{"  vpc_id"}</Line>
-      <Line>{"}"}</Line>
+      <Line>{"network.vpc_id"}</Line>
       <Line />
       <Line>
         <Comment t="# pinned cross-stack reference" />
@@ -120,14 +96,8 @@ function D2Source() {
       <Line>
         {"payments.main "}
         <Arrow />
-        {" network.vpc_id: {"}
+        {" network.vpc_id"}
       </Line>
-      <Line>
-        {"  "}
-        <Key t="style.stroke-dash" />
-        {": 3"}
-      </Line>
-      <Line>{"}"}</Line>
     </pre>
   );
 }
@@ -139,9 +109,9 @@ function D2Source() {
  */
 function RenderedDiagram() {
   return (
-    <div className="min-h-[262px] p-[14px_16px_18px] text-highlight min-[860px]:min-h-[316px]">
+    <div className="flex h-full items-center p-[12px_16px] text-highlight">
       <svg
-        viewBox="0 0 440 280"
+        viewBox="0 0 440 250"
         className="h-auto w-full"
         aria-hidden="true"
         focusable="false"
@@ -162,10 +132,10 @@ function RenderedDiagram() {
 
         {/* payments stack */}
         <rect
-          x="12"
-          y="18"
-          width="250"
-          height="240"
+          x="10"
+          y="16"
+          width="244"
+          height="220"
           rx="10"
           fill="none"
           stroke="currentColor"
@@ -174,66 +144,66 @@ function RenderedDiagram() {
           strokeDasharray="6,4"
         />
         <text
-          x="26"
-          y="38"
+          x="24"
+          y="36"
           fontFamily="ui-monospace, monospace"
-          fontSize="10.5"
+          fontSize="10"
           fill="currentColor"
         >
           stack: payments
         </text>
 
         <rect
-          x="34"
-          y="56"
-          width="206"
-          height="62"
+          x="30"
+          y="52"
+          width="204"
+          height="58"
           rx="8"
           fill="#1a1a22"
           stroke="#3a3a44"
         />
         <text
-          x="48"
-          y="80"
+          x="44"
+          y="75"
           fontFamily="ui-monospace, monospace"
-          fontSize="9.5"
+          fontSize="9"
           fill="#6e7681"
         >
           aws_db_instance
         </text>
         <text
-          x="48"
-          y="100"
+          x="44"
+          y="94"
           fontFamily="ui-monospace, monospace"
-          fontSize="13"
+          fontSize="12.5"
           fill="#e6edf3"
         >
           main
         </text>
 
         <rect
-          x="34"
-          y="168"
-          width="206"
-          height="62"
+          x="30"
+          y="158"
+          width="204"
+          height="58"
           rx="8"
           fill="#1a1a22"
           stroke="#3a3a44"
         />
         <text
-          x="48"
-          y="192"
+          x="44"
+          y="181"
           fontFamily="ui-monospace, monospace"
-          fontSize="9.5"
+          fontSize="9"
           fill="#6e7681"
         >
           aws_sqs_queue
         </text>
         <text
-          x="48"
-          y="212"
+          x="44"
+          y="200"
           fontFamily="ui-monospace, monospace"
-          fontSize="13"
+          fontSize="12.5"
           fill="#e6edf3"
         >
           settlements
@@ -241,17 +211,17 @@ function RenderedDiagram() {
 
         {/* main -> settlements */}
         <line
-          x1="137"
-          y1="118"
-          x2="137"
-          y2="164"
+          x1="132"
+          y1="110"
+          x2="132"
+          y2="154"
           stroke="currentColor"
           strokeWidth="1.4"
           markerEnd="url(#d2-arrow)"
         />
         <text
-          x="147"
-          y="146"
+          x="142"
+          y="138"
           fontFamily="ui-monospace, monospace"
           fontSize="9"
           fill="#8b949e"
@@ -261,10 +231,10 @@ function RenderedDiagram() {
 
         {/* network stack */}
         <rect
-          x="296"
-          y="76"
-          width="132"
-          height="86"
+          x="292"
+          y="70"
+          width="136"
+          height="82"
           rx="10"
           fill="none"
           stroke="currentColor"
@@ -273,30 +243,30 @@ function RenderedDiagram() {
           strokeDasharray="6,4"
         />
         <text
-          x="308"
-          y="96"
+          x="304"
+          y="90"
           fontFamily="ui-monospace, monospace"
-          fontSize="10"
+          fontSize="9.5"
           fill="currentColor"
           fillOpacity="0.8"
         >
           stack: network
         </text>
         <rect
-          x="312"
-          y="108"
-          width="100"
-          height="38"
+          x="308"
+          y="102"
+          width="104"
+          height="36"
           rx="7"
           fill="#1a1a22"
           stroke="#3a3a44"
         />
         <text
-          x="362"
-          y="132"
+          x="360"
+          y="125"
           textAnchor="middle"
           fontFamily="ui-monospace, monospace"
-          fontSize="12"
+          fontSize="11.5"
           fill="#e6edf3"
         >
           vpc_id
@@ -304,18 +274,18 @@ function RenderedDiagram() {
 
         {/* pinned cross-stack reference */}
         <line
-          x1="240"
-          y1="86"
-          x2="292"
-          y2="120"
+          x1="234"
+          y1="80"
+          x2="288"
+          y2="112"
           stroke="currentColor"
           strokeWidth="1.3"
           strokeDasharray="4,3"
           markerEnd="url(#d2-arrow)"
         />
         <text
-          x="244"
-          y="76"
+          x="238"
+          y="70"
           fontFamily="ui-monospace, monospace"
           fontSize="8"
           fill="#8b949e"
@@ -353,6 +323,7 @@ const tabs: WindowTab[] = [
 export function DiagramSection() {
   return (
     <MediumLayout
+      reverse
       copy={
         <MediumCopy
           accent={accents.diagram}

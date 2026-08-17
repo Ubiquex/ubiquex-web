@@ -95,6 +95,14 @@ export function TabbedWindow({
           id={`${idPrefix}-panel-${tab.id}`}
           aria-labelledby={`${idPrefix}-tab-${tab.id}`}
           hidden={tab.id !== active}
+          /*
+           * `flex-1` sets the flex shorthand, not `display`, so it is safe
+           * alongside the `hidden` attribute — a `flex` display utility here
+           * would win over preflight's [hidden]{display:none} and reveal every
+           * pane at once. The min-height is sized to the tallest sample so
+           * switching tabs does not reflow the page.
+           */
+          className="min-h-[350px] flex-1 min-[860px]:min-h-[381px]"
         >
           {tab.content}
         </div>

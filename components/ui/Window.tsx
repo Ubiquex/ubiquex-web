@@ -18,8 +18,8 @@ type WindowProps = {
  */
 export function Window({ label, titlebar, badge, children }: WindowProps) {
   return (
-    <div className="overflow-hidden rounded-[14px] border border-line bg-panel">
-      <div className="relative flex items-center border-b border-line px-4 py-3">
+    <div className="flex h-full flex-col overflow-hidden rounded-[14px] border border-line bg-panel">
+      <div className="relative flex shrink-0 items-center border-b border-line px-4 py-3">
         <div className="flex gap-[6px]">
           <span className="h-[10px] w-[10px] rounded-full bg-dot-red" />
           <span className="h-[10px] w-[10px] rounded-full bg-dot-amber" />
@@ -38,7 +38,8 @@ export function Window({ label, titlebar, badge, children }: WindowProps) {
         {badge ? <div className="relative ml-auto">{badge}</div> : null}
       </div>
 
-      {children}
+      {/* Takes the remaining height so the body fills an equal-height column. */}
+      <div className="flex flex-1 flex-col">{children}</div>
     </div>
   );
 }

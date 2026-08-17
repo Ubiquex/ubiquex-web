@@ -40,15 +40,16 @@ const points: MediumPoint[] = [
   },
 ];
 
+// Height is governed by TabbedWindow's panes, not per sample.
 const preClass =
-  "min-h-[260px] overflow-x-auto p-[16px] font-mono text-[11px] leading-[1.8] whitespace-pre text-code-plain min-[860px]:min-h-[300px] min-[860px]:p-[20px_22px] min-[860px]:text-[12.5px]";
+  "h-full overflow-x-auto p-[16px] font-mono text-[11px] leading-[1.7] whitespace-pre text-code-plain min-[860px]:p-[16px_20px_18px] min-[860px]:text-[12px]";
 
 function TypeScriptSample() {
   return (
     <pre className={preClass}>
       <Line>
         <K t="import" />
-        {" { stack, aws, secret, cross } "}
+        {" { stack, aws, secret } "}
         <K t="from" />
         {" "}
         <S t={'"@ubx/sdk"'} />
@@ -57,22 +58,11 @@ function TypeScriptSample() {
       <Line />
       <Line>
         <K t="const" />
-        {" s   = "}
+        {" s = "}
         <F t="stack" />
         {"("}
         <S t={'"payments"'} />
         {");"}
-      </Line>
-      <Line>
-        <K t="const" />
-        {" vpc = "}
-        <F t="cross" />
-        {"("}
-        <S t={'"network"'} />
-        {", "}
-        <S t={'"vpc_id"'} />
-        {");   "}
-        <C t="// pinned" />
       </Line>
       <Line />
       <Line>
@@ -95,12 +85,11 @@ function TypeScriptSample() {
         <N t="100" />
         {","}
       </Line>
-      <Line>{"  vpcId:            vpc,"}</Line>
       <Line>
         {"  password:         "}
         <F t="secret" />
         {"("}
-        <S t={'"payments-db-password"'} />
+        <S t={'"db-password"'} />
         {"),"}
       </Line>
       <Line>{"});"}</Line>
@@ -117,7 +106,7 @@ function TypeScriptSample() {
       <Line>
         {"  messageRetentionSeconds: "}
         <N t="345_600" />
-        {",     "}
+        {",   "}
         <C t="// 4 days" />
       </Line>
       <Line>{"});"}</Line>
@@ -135,17 +124,9 @@ function GoSample() {
       <Line />
       <Line>
         <K t="import" />
-        {" ("}
-      </Line>
-      <Line>
-        {"  "}
+        {" "}
         <S t={'"github.com/ubiquex/ubx-sdk-go/ubx"'} />
       </Line>
-      <Line>
-        {"  "}
-        <S t={'"github.com/ubiquex/ubx-sdk-go/aws"'} />
-      </Line>
-      <Line>{")"}</Line>
       <Line />
       <Line>
         <K t="func" />
@@ -154,21 +135,11 @@ function GoSample() {
         {"() {"}
       </Line>
       <Line>
-        {"  s   := ubx."}
+        {"  s := ubx."}
         <F t="Stack" />
         {"("}
         <S t={'"payments"'} />
         {")"}
-      </Line>
-      <Line>
-        {"  vpc := ubx."}
-        <F t="Cross" />
-        {"("}
-        <S t={'"network"'} />
-        {", "}
-        <S t={'"vpc_id"'} />
-        {")  "}
-        <C t="// pinned" />
       </Line>
       <Line />
       <Line>
@@ -198,16 +169,11 @@ function GoSample() {
       </Line>
       <Line>
         {"    "}
-        <S t={'"vpcId"'} />
-        {":            vpc,"}
-      </Line>
-      <Line>
-        {"    "}
         <S t={'"password"'} />
         {":         ubx."}
         <F t="Secret" />
         {"("}
-        <S t={'"payments-db-password"'} />
+        <S t={'"db-password"'} />
         {"),"}
       </Line>
       <Line>{"  })"}</Line>
@@ -228,8 +194,7 @@ function GoSample() {
         <S t={'"messageRetentionSeconds"'} />
         {": "}
         <N t="345600" />
-        {",   "}
-        <C t="// 4 days" />
+        {","}
       </Line>
       <Line>{"  })"}</Line>
       <Line>{"}"}</Line>
@@ -244,25 +209,15 @@ function PythonSample() {
         <K t="from" />
         {" ubx "}
         <K t="import" />
-        {" stack, aws, secret, cross"}
+        {" stack, aws, secret"}
       </Line>
       <Line />
       <Line>
-        {"s   = "}
+        {"s = "}
         <F t="stack" />
         {"("}
         <S t={'"payments"'} />
         {")"}
-      </Line>
-      <Line>
-        {"vpc = "}
-        <F t="cross" />
-        {"("}
-        <S t={'"network"'} />
-        {", "}
-        <S t={'"vpc_id"'} />
-        {")   "}
-        <C t="# pinned" />
       </Line>
       <Line />
       <Line>
@@ -284,12 +239,11 @@ function PythonSample() {
         <N t="100" />
         {","}
       </Line>
-      <Line>{"  vpc_id            = vpc,"}</Line>
       <Line>
         {"  password          = "}
         <F t="secret" />
         {"("}
-        <S t={'"payments-db-password"'} />
+        <S t={'"db-password"'} />
         {"),"}
       </Line>
       <Line>{")"}</Line>
@@ -306,7 +260,7 @@ function PythonSample() {
       <Line>
         {"  message_retention_seconds = "}
         <N t="345_600" />
-        {",      "}
+        {",   "}
         <C t="# 4 days" />
       </Line>
       <Line>{")"}</Line>

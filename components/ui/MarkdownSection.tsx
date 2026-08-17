@@ -26,7 +26,7 @@ const points: MediumPoint[] = [
 
 function PaymentsDocument() {
   return (
-    <pre className="overflow-x-auto p-[16px] font-mono text-[11px] leading-[1.85] whitespace-pre min-[860px]:p-[20px_22px] min-[860px]:text-[12.5px]">
+    <pre className="h-full overflow-x-auto p-[16px] font-mono text-[11px] leading-[1.7] whitespace-pre min-[860px]:p-[16px_20px_18px] min-[860px]:text-[12px]">
       <Line>
         <span className="text-dim">{"---"}</span>
       </Line>
@@ -53,16 +53,13 @@ function PaymentsDocument() {
       </Line>
       <Line>
         <span className="text-code-plain">
-          {"Postgres for the payments service, modelled on"}
+          {"Postgres for payments, half of staging"}
         </span>
       </Line>
       <Line>
         <span className="text-code-plain">
-          {"staging but roughly half capacity, plus a queue"}
+          {"capacity, plus a settlement queue."}
         </span>
-      </Line>
-      <Line>
-        <span className="text-code-plain">{"for settlement jobs."}</span>
       </Line>
       <Line />
       <Line>
@@ -70,11 +67,8 @@ function PaymentsDocument() {
       </Line>
       <Line>
         <span className="text-code-plain">
-          {"- Reachable only from payments, never public"}
+          {"- Never public · eu-west-1 only"}
         </span>
-      </Line>
-      <Line>
-        <span className="text-code-plain">{"- Data stays in eu-west-1"}</span>
       </Line>
       <Line>
         <span className="text-code-plain">{"- Queue retention ≥ 4 days"}</span>
@@ -87,13 +81,7 @@ function PaymentsDocument() {
         <span className="text-md-heading">{"## References"}</span>
       </Line>
       <Line>
-        <span className="text-code-plain">{"- staging db: "}</span>
-        <span className="text-brand-bright">
-          {"@staging.aws_db_instance.main"}
-        </span>
-      </Line>
-      <Line>
-        <span className="text-code-plain">{"- network:    "}</span>
+        <span className="text-code-plain">{"- network: "}</span>
         <span className="text-brand-bright">{"@network.vpc_id"}</span>
       </Line>
     </pre>

@@ -58,6 +58,12 @@
   --color-code-plain: #c9d1d9; /* unhighlighted code; markdown body lines */
   --color-md-heading: #569cd6; /* markdown ## headings */
 
+  /* Section surfaces. surface-0 is not defined here: it is exactly
+     --color-ink (#0d1117), so the base surface reuses that token rather than
+     shipping a second name for the same value. */
+  --color-surface-1: #10151d; /* raised section */
+  --color-seam: #1a212b; /* boundary hairline between sections */
+
   /* Timeline step accents. The other three steps reuse the existing brand,
      accent and highlight families. True Persian purple (#32127A) is not in this
      set: it disappears against the dark ground, so it would only ever be valid
@@ -198,6 +204,40 @@ body {
 }
 
 /*
+ * Panel colours resolve through custom properties, so a raised section can lift
+ * the panels sitting on it without any section overriding colours itself.
+ */
+:root {
+  --panel-bg: var(--color-panel);
+  --panel-border: var(--color-line);
+}
+.surface-raised {
+  --panel-bg: #151a23;
+  --panel-border: #222a35;
+}
+
+/*
+ * Soft bloom at the top edge, applied to the timeline only. Every raised
+ * section carrying this would flatten the effect and read as stripes.
+ */
+.timeline-glow::before {
+  content: "";
+  position: absolute;
+  top: -140px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 780px;
+  height: 280px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    closest-side,
+    rgba(0, 166, 147, 0.09),
+    transparent
+  );
+}
+
+/*
  * Timeline section.
  *
  * The structural colours live here rather than in the component so the JSX
@@ -205,15 +245,6 @@ body {
  * the step sets, following the pattern MediumsSection established with
  * --accent: --step (base), --step-bright (text), --step-glow, --step-bloom.
  */
-.timeline-bg {
-  background: radial-gradient(
-    1200px 600px at 50% -10%,
-    #101a22 0%,
-    #0b0d12 55%,
-    #0b0d12 100%
-  );
-}
-
 .rail::before {
   content: "";
   position: absolute;

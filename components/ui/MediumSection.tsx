@@ -56,7 +56,7 @@ export function MediumSection({
   children,
 }: MediumSectionProps) {
   return (
-    <section className="bg-ink">
+    <section>
       <div className="mx-auto w-full max-w-6xl px-7 pt-8 pb-20">
         <header className="mb-[26px] flex flex-col items-center text-center min-[860px]:mb-[44px]">
           <span

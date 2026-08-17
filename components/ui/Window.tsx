@@ -18,7 +18,7 @@ type WindowProps = {
  */
 export function Window({ label, titlebar, badge, children }: WindowProps) {
   return (
-    <div className="flex h-full flex-col overflow-hidden rounded-[14px] border border-line bg-panel">
+    <div className="flex h-full flex-col overflow-hidden rounded-[14px] border border-[var(--panel-border)] bg-[var(--panel-bg)]">
       <div className="relative flex shrink-0 items-center border-b border-line px-[14px] py-[10px]">
         <div className="flex gap-[6px]">
           <span className="h-[9px] w-[9px] rounded-full bg-dot-red" />

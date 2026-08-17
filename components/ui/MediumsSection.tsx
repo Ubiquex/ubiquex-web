@@ -376,7 +376,7 @@ function MobileCircuit() {
 
 export function MediumsSection() {
   return (
-    <section className="bg-ink">
+    <section>
       <div className="mx-auto w-full max-w-6xl px-7 pt-8 pb-20">
         <div className="text-center">
           <h2 className="text-[27px] font-bold tracking-tight text-primary min-[820px]:text-[40px]">

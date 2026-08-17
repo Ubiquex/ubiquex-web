@@ -6,7 +6,7 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-24 border-t border-line">
+    <footer className="surface-raised border-t border-seam bg-surface-1">
       <Container>
         <div className="flex flex-col gap-4 py-10 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
           <p>&copy; {year} Ubiquex</p>

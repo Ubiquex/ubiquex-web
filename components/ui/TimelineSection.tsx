@@ -251,7 +251,7 @@ function InfoIcon() {
 
 export function TimelineSection() {
   return (
-    <section className="timeline-bg px-[18px] pt-[46px] pb-[54px] min-[860px]:px-12 min-[860px]:pt-[68px] min-[860px]:pb-20">
+    <section className="px-[18px] pt-[46px] pb-[54px] min-[860px]:px-12 min-[860px]:pt-[68px] min-[860px]:pb-20">
       <div className="mx-auto w-full max-w-6xl">
         <header className="flex flex-col items-center text-center">
           <span className="mb-[14px] inline-flex rounded-full border border-[rgba(0,166,147,0.32)] bg-[rgba(0,166,147,0.08)] px-[12px] py-[5px] font-mono text-[10px] tracking-[0.1em] text-brand-bright uppercase shadow-[0_0_24px_rgba(0,196,174,0.10)] min-[860px]:mb-[22px] min-[860px]:px-[15px] min-[860px]:py-[6px] min-[860px]:text-[11.5px]">

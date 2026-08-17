@@ -33,7 +33,7 @@ const points: MediumPoint[] = [
   },
   {
     lead: "Converges with every medium",
-    rest: " — the same stack drawn, written or coded resolves to byte-identical intent.",
+    rest: " — the same stack's topology, drawn, written or coded, resolves to byte-identical intent.",
   },
   {
     lead: "Honest about its limits",

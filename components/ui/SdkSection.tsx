@@ -36,7 +36,7 @@ const points: MediumPoint[] = [
   },
   {
     lead: "Codegen'd from provider schemas",
-    rest: " — every attribute across 5,200+ resource types is typed at author time.",
+    rest: " — every attribute across 4,200+ resource types is typed at author time.",
   },
 ];
 

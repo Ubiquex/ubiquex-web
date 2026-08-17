@@ -146,7 +146,7 @@ const steps: Step[] = [
     title: "Author",
     chip: "any medium",
     paragraph:
-      "Write the change in whatever form fits the task. A markdown document when the reasoning matters more than the fields, TypeScript when you want types and editor completion, a D2 diagram when the shape is the point, or a plain conversation when you are still working it out. None of these is a wrapper around a blessed format. Each one authors directly.",
+      "Write the change in whatever form fits the task. A markdown document when the reasoning matters more than the fields, Go, TypeScript, or Python when you want types and editor completion, a D2 diagram when the shape is the point, or a plain conversation when you are still working it out. None of these is a wrapper around a blessed format. Each one authors directly.",
     pills: ["markdown", "sdk", "diagram", "dialogue"],
     vars: {
       "--step": "#E49B0F",
@@ -164,7 +164,7 @@ const steps: Step[] = [
     title: "Blueprint",
     chip: "canonical IR",
     paragraph:
-      "Whatever you wrote collapses into one typed intermediate representation. The resolver reads live provider state, pins every cross-stack reference to the exact head it saw, and computes concrete values. It evaluates twice and compares bytes, so a non-deterministic evaluator fails here rather than in production.",
+      "Whatever you wrote collapses into one typed intermediate representation. The resolver reads live provider state, pins every cross-stack reference to the exact head it saw, and computes concrete values. Evaluation runs twice and the results are compared byte for byte, so a non-deterministic evaluator fails here rather than in production.",
     pills: ["live state read", "refs pinned @7fc2", "double-run verified"],
     vars: {
       "--step": "#6D3BC4",
@@ -183,7 +183,7 @@ const steps: Step[] = [
     title: "Plan",
     chip: "ubx plan",
     paragraph:
-      "The blueprint becomes something a reviewer can actually judge: which resources change, on which provider and region, what the monthly cost delta is, and which policy invariants it satisfies. The result is hashed and frozen. If live state moves afterwards the proposal goes stale rather than applying against a world that has already changed.",
+      "It becomes something a reviewer can actually judge: which resources change, on which provider and region, what the monthly cost delta is, and which policy invariants it satisfies. The result is hashed and frozen. If live state moves afterwards, the proposal goes stale rather than applying against a world that has already changed.",
     pills: ["3 invariants passed", "hash frozen", "stale on drift"],
     vars: {
       "--step": "#1C39BB",
@@ -225,7 +225,7 @@ const steps: Step[] = [
     title: "Ship",
     chip: "ubx ship",
     paragraph:
-      "The native executor speaks the plugin protocol directly to provider binaries and owns failure semantics end to end: a per-resource state machine, reconcile by query when a failure is ambiguous, and partial applies modelled as real state rather than guessed at. The applied proposal appends to the ledger.",
+      "The native executor speaks the plugin protocol directly to provider binaries and owns failure semantics end to end: a per-resource state machine, reconcile by query when a failure is ambiguous, and partial applies modeled as real state rather than guessed at. The applied proposal appends to the ledger.",
     pills: ["plugin protocol v6", "no state file", "ledger appended"],
     vars: {
       "--step": "#00A693",

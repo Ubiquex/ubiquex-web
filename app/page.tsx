@@ -1,5 +1,6 @@
 import { Hero } from "@/components/ui/Hero";
 import { MediumsSection } from "@/components/ui/MediumsSection";
+import { TimelineSection } from "@/components/ui/TimelineSection";
 import { MarkdownSection } from "@/components/ui/MarkdownSection";
 import { SdkSection } from "@/components/ui/SdkSection";
 import { DiagramSection } from "@/components/ui/DiagramSection";
@@ -11,6 +12,7 @@ export default function HomePage() {
     <>
       <Hero />
       <MediumsSection />
+      <TimelineSection />
       <MarkdownSection />
       <SdkSection />
       <DiagramSection />

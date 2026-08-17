@@ -58,6 +58,15 @@
   --color-code-plain: #c9d1d9; /* unhighlighted code; markdown body lines */
   --color-md-heading: #569cd6; /* markdown ## headings */
 
+  /* Timeline step accents. The other three steps reuse the existing brand,
+     accent and highlight families. True Persian purple (#32127A) is not in this
+     set: it disappears against the dark ground, so it would only ever be valid
+     as a fill behind light text, never as a stroke, border or text colour. */
+  --color-persian-yellow: #e49b0f;
+  --color-persian-yellow-bright: #f0b429;
+  --color-persian-purple: #6d3bc4;
+  --color-persian-purple-bright: #a98be8;
+
   --color-line-strong: #262b36; /* border one step brighter than --color-line */
   --color-card: #181c24; /* overlapping description card, sits above --color-panel */
   --color-body: #c2c9d2; /* card body copy, between --color-muted and --color-primary */
@@ -188,6 +197,143 @@ body {
   }
 }
 
+/*
+ * Timeline section.
+ *
+ * The structural colours live here rather than in the component so the JSX
+ * stays readable. Anything that varies per step is read from a custom property
+ * the step sets, following the pattern MediumsSection established with
+ * --accent: --step (base), --step-bright (text), --step-glow, --step-bloom.
+ */
+.timeline-bg {
+  background: radial-gradient(
+    1200px 600px at 50% -10%,
+    #101a22 0%,
+    #0b0d12 55%,
+    #0b0d12 100%
+  );
+}
+
+.rail::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.42;
+  background: linear-gradient(
+    #e49b0f 0%,
+    #6d3bc4 26%,
+    #1c39bb 52%,
+    #cc2936 76%,
+    #00a693 100%
+  );
+}
+
+.rail-pulse {
+  position: absolute;
+  left: 0;
+  width: 2px;
+  height: 130px;
+  background: linear-gradient(transparent, #ffffff, transparent);
+  opacity: 0.5;
+  animation: railrun 4.6s linear infinite;
+}
+@keyframes railrun {
+  from {
+    top: -130px;
+  }
+  to {
+    top: 100%;
+  }
+}
+
+.step-node {
+  color: var(--step-bright);
+  border: 1.6px solid var(--step);
+  box-shadow: 0 0 var(--step-glow-size, 28px) var(--step-glow);
+}
+.step-node::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border-radius: 9999px;
+  border: 1px solid currentColor;
+  opacity: 0.15;
+}
+
+.step-card {
+  background: linear-gradient(160deg, #14181f 0%, #10131a 60%);
+}
+/* Hairline across the top, fading out to the right. */
+.step-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--step), transparent 70%);
+}
+/* Corner bloom behind the content. */
+.step-card::after {
+  content: "";
+  position: absolute;
+  top: -80px;
+  left: -60px;
+  width: 260px;
+  height: 180px;
+  border-radius: 9999px;
+  filter: blur(56px);
+  opacity: 0.16;
+  background: var(--step-bloom);
+}
+.step-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.step-chip {
+  color: var(--step-bright);
+  border: 1px solid var(--chip-border);
+  background: var(--chip-bg);
+}
+
+/* Blueprint frame brackets: each shows only its own two edges. */
+.bp-corner {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border: 0 solid #a98be8;
+  opacity: 0.85;
+}
+.bp-tl {
+  top: 8px;
+  left: 8px;
+  border-top-width: 1.6px;
+  border-left-width: 1.6px;
+  border-top-left-radius: 2px;
+}
+.bp-tr {
+  top: 8px;
+  right: 8px;
+  border-top-width: 1.6px;
+  border-right-width: 1.6px;
+  border-top-right-radius: 2px;
+}
+.bp-bl {
+  bottom: 8px;
+  left: 8px;
+  border-bottom-width: 1.6px;
+  border-left-width: 1.6px;
+  border-bottom-left-radius: 2px;
+}
+.bp-br {
+  bottom: 8px;
+  right: 8px;
+  border-bottom-width: 1.6px;
+  border-right-width: 1.6px;
+  border-bottom-right-radius: 2px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .flow,
   .ring {
@@ -196,5 +342,9 @@ body {
   .flow {
     stroke-dasharray: none;
     opacity: 0.55;
+  }
+  .rail-pulse {
+    animation: none;
+    opacity: 0;
   }
 }

@@ -1,4 +1,5 @@
 import { Hero } from "@/components/ui/Hero";
+import { ProviderStrip } from "@/components/ui/ProviderStrip";
 import { MediumsSection } from "@/components/ui/MediumsSection";
 import { TimelineSection } from "@/components/ui/TimelineSection";
 import { MarkdownSection } from "@/components/ui/MarkdownSection";
@@ -11,6 +12,7 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <ProviderStrip />
       <MediumsSection />
       <TimelineSection />
       <MarkdownSection />

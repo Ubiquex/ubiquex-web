@@ -1,6 +1,6 @@
 import { CodeLine as Line } from "./CodeLine";
-import { MediumLayout, MediumCopy } from "./MediumLayout";
-import type { MediumPoint } from "./MediumLayout";
+import { MediumSection } from "./MediumSection";
+import type { MediumPoint } from "./MediumSection";
 import { TabbedWindow } from "./TabbedWindow";
 import type { WindowTab } from "./TabbedWindow";
 import { accents } from "./accents";
@@ -42,7 +42,7 @@ const points: MediumPoint[] = [
 
 // Height is governed by TabbedWindow's panes, not per sample.
 const preClass =
-  "h-full overflow-x-auto p-[16px] font-mono text-[11px] leading-[1.7] whitespace-pre text-code-plain min-[860px]:p-[16px_20px_18px] min-[860px]:text-[12px]";
+  "h-full overflow-auto p-[14px_14px_16px] font-mono text-[10.5px] leading-[1.65] whitespace-pre text-code-plain min-[860px]:p-[16px_18px_18px] min-[860px]:text-[11.5px]";
 
 function TypeScriptSample() {
   return (
@@ -276,26 +276,21 @@ const tabs: WindowTab[] = [
 
 export function SdkSection() {
   return (
-    <MediumLayout
-      copy={
-        <MediumCopy
-          accent={accents.sdk}
+    <MediumSection
+      accent={accents.sdk}
           eyebrow="sdk medium"
           headingLead="Real types."
           headingAccent="Zero execution."
           paragraph="Author in the language your team already uses. The SDK describes infrastructure and nothing else — it emits IR, and the deterministic resolver does the rest."
-          points={points}
-        />
-      }
-      panel={
-        <TabbedWindow
-          idPrefix="sdk"
-          ariaLabel="SDK language"
-          tabs={tabs}
-          activeTabClass={accents.sdk.tabActive}
-        />
-      }
-    />
+      points={points}
+    >
+      <TabbedWindow
+        idPrefix="sdk"
+        ariaLabel="SDK language"
+        tabs={tabs}
+        activeTabClass={accents.sdk.tabActive}
+      />
+    </MediumSection>
   );
 }
 

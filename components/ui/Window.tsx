@@ -19,15 +19,15 @@ type WindowProps = {
 export function Window({ label, titlebar, badge, children }: WindowProps) {
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-[14px] border border-line bg-panel">
-      <div className="relative flex shrink-0 items-center border-b border-line px-4 py-3">
+      <div className="relative flex shrink-0 items-center border-b border-line px-[14px] py-[10px]">
         <div className="flex gap-[6px]">
-          <span className="h-[10px] w-[10px] rounded-full bg-dot-red" />
-          <span className="h-[10px] w-[10px] rounded-full bg-dot-amber" />
-          <span className="h-[10px] w-[10px] rounded-full bg-dot-green" />
+          <span className="h-[9px] w-[9px] rounded-full bg-dot-red" />
+          <span className="h-[9px] w-[9px] rounded-full bg-dot-amber" />
+          <span className="h-[9px] w-[9px] rounded-full bg-dot-green" />
         </div>
 
         {label ? (
-          <span className="absolute inset-x-0 text-center font-mono text-[12px] text-dim">
+          <span className="absolute inset-x-0 text-center font-mono text-[11.5px] text-dim">
             {label}
           </span>
         ) : null}

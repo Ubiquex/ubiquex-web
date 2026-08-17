@@ -1,12 +1,11 @@
 import { Window } from "./Window";
 import { CodeLine as Line } from "./CodeLine";
-import { MediumLayout, MediumCopy } from "./MediumLayout";
-import type { MediumPoint } from "./MediumLayout";
+import { MediumSection } from "./MediumSection";
+import type { MediumPoint } from "./MediumSection";
 import { accents } from "./accents";
 
 /*
  * The markdown medium in detail. Server component — static markup, no state.
- * Uses the shared medium shell, with `reverse` putting the panel on the left.
  */
 
 const points: MediumPoint[] = [
@@ -24,9 +23,12 @@ const points: MediumPoint[] = [
   },
 ];
 
+const preClass =
+  "h-full overflow-auto p-[14px_14px_16px] font-mono text-[10.5px] leading-[1.65] whitespace-pre text-code-plain min-[860px]:p-[16px_18px_18px] min-[860px]:text-[11.5px]";
+
 function PaymentsDocument() {
   return (
-    <pre className="h-full overflow-x-auto p-[16px] font-mono text-[11px] leading-[1.7] whitespace-pre min-[860px]:p-[16px_20px_18px] min-[860px]:text-[12px]">
+    <pre className={preClass}>
       <Line>
         <span className="text-dim">{"---"}</span>
       </Line>
@@ -90,32 +92,26 @@ function PaymentsDocument() {
 
 export function MarkdownSection() {
   return (
-    <MediumLayout
-      reverse
-      copy={
-        <MediumCopy
-          accent={accents.markdown}
-          eyebrow="markdown medium"
-          headingLead="Describe the intent."
-          headingAccent="Skip the resources."
-          paragraph="Write what the infrastructure is for, in a document a reviewer can actually read. ubx resolves it against live state and neighbouring stacks, then freezes the result into a typed, hashed proposal."
-          points={points}
-        />
-      }
-      panel={
-        <Window
-          label="payments.md"
-          badge={
-            /* Hidden, not removed — it crowds the narrow titlebar. */
-            <span className="hidden rounded-md border border-line-strong px-2 py-[3px] font-mono text-[10px] text-dim min-[860px]:inline-block">
-              intent/v1
-            </span>
-          }
-        >
-          <PaymentsDocument />
-        </Window>
-      }
-    />
+    <MediumSection
+      accent={accents.markdown}
+      eyebrow="markdown medium"
+      headingLead="Describe the intent."
+      headingAccent="Skip the resources."
+      paragraph="Write what the infrastructure is for, in a document a reviewer can actually read. ubx resolves it against live state and neighbouring stacks, then freezes the result into a typed, hashed proposal."
+      points={points}
+    >
+      <Window
+        label="payments.md"
+        badge={
+          /* Hidden, not removed — it crowds the narrow titlebar. */
+          <span className="hidden rounded-md border border-line-strong px-[7px] py-[3px] font-mono text-[9.5px] text-dim min-[860px]:inline-block">
+            intent/v1
+          </span>
+        }
+      >
+        <PaymentsDocument />
+      </Window>
+    </MediumSection>
   );
 }
 

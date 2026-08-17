@@ -59,6 +59,8 @@
   --color-md-heading: #569cd6; /* markdown ## headings */
 
   --color-line-strong: #262b36; /* border one step brighter than --color-line */
+  --color-card: #181c24; /* overlapping description card, sits above --color-panel */
+  --color-body: #c2c9d2; /* card body copy, between --color-muted and --color-primary */
 
   /* Nav collapses to the mobile layout below this width. */
   --breakpoint-menu: 860px;

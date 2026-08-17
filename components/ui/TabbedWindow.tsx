@@ -99,10 +99,17 @@ export function TabbedWindow({
            * `flex-1` sets the flex shorthand, not `display`, so it is safe
            * alongside the `hidden` attribute — a `flex` display utility here
            * would win over preflight's [hidden]{display:none} and reveal every
-           * pane at once. The min-height is sized to the tallest sample so
-           * switching tabs does not reflow the page.
+           * pane at once.
+           *
+           * The height is explicit, not a min-height, and sized to the tallest
+           * pane. Two reasons: the description card is absolutely positioned and
+           * centred against the window, so any height change on tab switch would
+           * visibly shift the card; and a definite height is what lets a pane's
+           * content resolve `h-full` — with `flex-1` the height is used-value
+           * only, so a percentage height falls back to auto and an SVG child
+           * grows to its own aspect ratio instead of fitting the pane.
            */
-          className="min-h-[350px] flex-1 min-[860px]:min-h-[381px]"
+          className="h-[325px] min-[860px]:h-[357px]"
         >
           {tab.content}
         </div>

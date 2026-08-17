@@ -1,6 +1,6 @@
 import { CodeLine as Line } from "./CodeLine";
-import { MediumLayout, MediumCopy } from "./MediumLayout";
-import type { MediumPoint } from "./MediumLayout";
+import { MediumSection } from "./MediumSection";
+import type { MediumPoint } from "./MediumSection";
 import { TabbedWindow } from "./TabbedWindow";
 import type { WindowTab } from "./TabbedWindow";
 import { accents } from "./accents";
@@ -41,9 +41,12 @@ const points: MediumPoint[] = [
   },
 ];
 
+const preClass =
+  "h-full overflow-auto p-[14px_14px_16px] font-mono text-[10.5px] leading-[1.65] whitespace-pre text-code-plain min-[860px]:p-[16px_18px_18px] min-[860px]:text-[11.5px]";
+
 function D2Source() {
   return (
-    <pre className="h-full overflow-x-auto p-[16px] font-mono text-[11px] leading-[1.7] whitespace-pre text-code-plain min-[860px]:p-[16px_20px_18px] min-[860px]:text-[12px]">
+    <pre className={preClass}>
       <Line>
         <Key t="payments" />
         {": {"}
@@ -109,10 +112,12 @@ function D2Source() {
  */
 function RenderedDiagram() {
   return (
-    <div className="flex h-full items-center p-[12px_16px] text-highlight">
+    <div className="flex h-full items-center justify-center p-[12px_16px] text-highlight">
       <svg
         viewBox="0 0 440 250"
-        className="h-auto w-full"
+        /* h-full + default preserveAspectRatio letterboxes the diagram inside
+           the pane, so it can never exceed the source pane's height. */
+        className="h-full w-full"
         aria-hidden="true"
         focusable="false"
       >
@@ -322,27 +327,21 @@ const tabs: WindowTab[] = [
 
 export function DiagramSection() {
   return (
-    <MediumLayout
-      reverse
-      copy={
-        <MediumCopy
-          accent={accents.diagram}
+    <MediumSection
+      accent={accents.diagram}
           eyebrow="diagram medium"
           headingLead="Sketch the shape."
           headingAccent="Keep the contract."
           paragraph="Draw the topology in D2 and let ubx resolve it. The diagram is a first-class author, not documentation generated after the fact — it produces the same typed, hashed proposal as every other medium."
-          points={points}
-        />
-      }
-      panel={
-        <TabbedWindow
-          idPrefix="d2"
-          ariaLabel="Diagram view"
-          tabs={tabs}
-          activeTabClass={accents.diagram.tabActive}
-        />
-      }
-    />
+      points={points}
+    >
+      <TabbedWindow
+        idPrefix="d2"
+        ariaLabel="Diagram view"
+        tabs={tabs}
+        activeTabClass={accents.diagram.tabActive}
+      />
+    </MediumSection>
   );
 }
 

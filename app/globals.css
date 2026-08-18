@@ -299,6 +299,62 @@ body {
   }
 }
 
+/*
+ * Above 860px the post-ship cards sit side by side, so the vertical run passes
+ * to their left and never reaches them: the glow has to turn the corner and
+ * sweep the horizontal rail underneath them.
+ *
+ * Two elements cannot share one motion, so instead they share one clock. Both
+ * animations run the same 7.7s period and each is parked off its own clip for
+ * the leg it is not driving, which keeps them locked to each other forever --
+ * a delay on one of them would drift. The handoff is at 70%: the vertical leg
+ * is 5.4s, the same as the whole cycle below 860px, so the steps keep the
+ * speed they had.
+ *
+ * 70/30 is also the two legs' own length ratio at any viewport wide enough to
+ * hit the layout's max width, so the glow crosses the corner at a constant
+ * speed there (390 against 395 px/s). Between 860px and that cap the
+ * horizontal leg runs slower, because the rail shortens as the cards narrow
+ * while the column of steps grows taller. One split cannot serve both, and a
+ * ratio that tracked the widths would have to be measured at runtime.
+ */
+@media (min-width: 860px) {
+  .rail-pulse {
+    animation: railrun-leg 7.7s linear infinite;
+  }
+  .rail-pulse-h {
+    position: absolute;
+    top: 0;
+    width: 130px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #ffffff, transparent);
+    opacity: 0.5;
+    animation: railrun-h 7.7s linear infinite;
+  }
+}
+@keyframes railrun-leg {
+  0% {
+    top: -130px;
+  }
+  70% {
+    top: 100%;
+  }
+  100% {
+    top: 100%;
+  }
+}
+@keyframes railrun-h {
+  0% {
+    left: -130px;
+  }
+  70% {
+    left: -130px;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
 .step-node {
   color: var(--step-bright);
   border: 1.6px solid var(--step);
@@ -411,7 +467,8 @@ body {
     stroke-dasharray: none;
     opacity: 0.55;
   }
-  .rail-pulse {
+  .rail-pulse,
+  .rail-pulse-h {
     animation: none;
     opacity: 0;
   }

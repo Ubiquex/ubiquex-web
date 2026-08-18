@@ -491,9 +491,12 @@ export function TimelineSection() {
                * as a percentage it stays correct at every width.
                */}
               <li
-                className="post-rail-h absolute bottom-[16px] left-[-26px] right-[calc(16.6667%-6.667px)] hidden h-[2px] min-[860px]:block"
+                className="post-rail-h absolute bottom-[16px] left-[-26px] right-[calc(16.6667%-6.667px)] hidden h-[2px] overflow-hidden min-[860px]:block"
                 aria-hidden="true"
-              />
+              >
+                {/* The glow's second leg. Timed against the first in globals.css. */}
+                <div className="rail-pulse-h" />
+              </li>
 
               {postShip.map((op) => (
                 <li key={op.key} style={op.vars} className="relative min-[860px]:pb-[46px]">

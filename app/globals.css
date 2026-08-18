@@ -245,6 +245,19 @@ body {
  * the step sets, following the pattern MediumsSection established with
  * --accent: --step (base), --step-bright (text), --step-glow, --step-bloom.
  */
+/*
+ * The five stops are placed where the five nodes actually sit, measured down
+ * the rail: 0, 18, 44, 71 and 86 percent. They held at 0/26/52/76/100 before,
+ * which put step 5's node at 88 percent -- halfway between the red stop and
+ * the green one, so it rendered a muddy grey rather than Ship's green. The
+ * measured positions move by under two percent between 375px and 1600px, so
+ * one set of stops lands each step in its own colour at every width.
+ *
+ * Past step 5 the sequence is over, so the gradient resolves into the neutral
+ * the post-ship branch is drawn in. #6b778b at this layer's .42 opacity is the
+ * same composite as --branch below, which is what the tail, the elbow and the
+ * horizontal rail all use: the handoff at the end of the ol is seamless.
+ */
 .rail::before {
   content: "";
   position: absolute;
@@ -252,10 +265,11 @@ body {
   opacity: 0.42;
   background: linear-gradient(
     #e49b0f 0%,
-    #6d3bc4 26%,
-    #1c39bb 52%,
-    #cc2936 76%,
-    #00a693 100%
+    #6d3bc4 18%,
+    #1c39bb 44%,
+    #cc2936 71%,
+    #00a693 86%,
+    #6b778b 100%
   );
 }
 
@@ -398,33 +412,50 @@ body {
 /*
  * Post-ship group: three ongoing operations hanging off the rail below step 5.
  *
+ * Everything structural here is drawn in one neutral. The five steps are a
+ * sequence and earn a gradient; these three are not, and continuing the
+ * gradient through them would say they were steps six to eight. The colour
+ * lives in the three nodes instead.
+ */
+:root {
+  --branch: rgba(107, 119, 139, 0.42);
+}
+
+/*
+ * The tail carries the line from the end of the steps down to the elbow, so
+ * the run from step 1 to the horizontal rail is unbroken. It is scoped to the
+ * group and the gradient rail is scoped to the ol, which is what keeps the
+ * gradient on the steps: the two boxes meet exactly at the boundary between
+ * them, and both start neutral and end neutral there.
+ *
+ * Below 860px there is no elbow, so it runs to the group's own bottom, which
+ * is the last card's bottom: the grid is the last child and the group has no
+ * bottom padding, so it stops there rather than overshooting.
+ */
+.rail-tail {
+  background: var(--branch);
+}
+
+/*
  * The elbow is a bordered box rather than an SVG. Only its left and bottom
  * borders are drawn, and the bottom-left radius supplies the curve, so the
  * corner scales with the container instead of depending on fixed coordinates
  * that would break when the cards reflow.
+ *
+ * It is exactly as tall as its own radius, so it is nothing but the curve: the
+ * tail above supplies the straight vertical, and the two meet without the
+ * doubled, darker patch that overlapping semi-transparent strokes would show.
  */
 .post-elbow {
-  border-left: 2px solid rgba(0, 166, 147, 0.42);
-  border-bottom: 2px solid rgba(0, 166, 147, 0.42);
+  border-left: 2px solid var(--branch);
+  border-bottom: 2px solid var(--branch);
   border-top: 0;
   border-right: 0;
   border-bottom-left-radius: 20px;
 }
 
-/* Both rails carry the same treatment as the vertical one: a muted gradient
-   through the three card accents, at the rail's .42 opacity. */
-.post-rail-h::before,
-.post-rail-v::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: 0.42;
-}
-.post-rail-h::before {
-  background: linear-gradient(90deg, #00a693 0%, #e49b0f 52%, #e8404e 100%);
-}
-.post-rail-v::before {
-  background: linear-gradient(#00a693 0%, #e49b0f 52%, #e8404e 100%);
+.post-rail-h {
+  background: var(--branch);
 }
 
 /* Smaller than the numbered step nodes, and carrying an icon rather than a

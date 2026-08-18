@@ -378,7 +378,7 @@ export function TimelineSection() {
 
         <ol className="relative mt-[42px] list-none pl-[52px] min-[860px]:mt-[66px] min-[860px]:pl-24">
           {/* The rail. Its gradient and travelling pulse live in globals.css. */}
-          <div className="rail absolute top-[30px] bottom-0 left-[15px] w-[2px] overflow-hidden rounded min-[860px]:left-[26px]">
+          <div className="rail absolute top-[30px] bottom-0 left-[15px] w-[2px] overflow-hidden min-[860px]:left-[26px]">
             <div className="rail-pulse" />
           </div>
 
@@ -424,34 +424,47 @@ export function TimelineSection() {
         </ol>
 
         {/*
-         * The post-ship group. The vertical rail runs on past step 5, elbows
+         * The post-ship group. The line runs on past step 5, elbows
          * left-to-horizontal, and the three nodes sit on that horizontal rail.
+         *
+         * Padding rather than margin on the top edge, so the group's box
+         * starts exactly where the ol's ends and the tail below picks the line
+         * up with nothing between them.
          *
          * Geometry, in the group's own coordinate space (its padding-left
          * matches the ol's, so the cards align with the step cards and the
-         * rail sits outside them at x 26 to 28):
-         *   - the elbow's left border occupies x 26 to 28, continuing the
-         *     vertical rail exactly; its 20px radius means the curve ends at
-         *     x 46 and its bottom border runs on to its own right edge, x 70
-         *   - the horizontal rail starts at x 70, so the two abut with neither
-         *     a gap nor an overlapping (and so doubly opaque) 2px
-         *   - both are pinned to bottom 16px. The grid is the last child and
-         *     the wrapper has no bottom padding, so that offset resolves to
-         *     the same line for the elbow (in the wrapper) and the rail (in
-         *     the grid)
+         * line sits outside them at x 26 to 28):
+         *   - the tail occupies x 26 to 28, the same column as the ol's rail,
+         *     so there is no sideways jog where one hands over to the other
+         *   - the elbow is 20px tall with a 20px radius, so it is only the
+         *     curve. Its left border occupies the same x 26 to 28 and its top
+         *     edge sits at bottom 36px, which is where the tail stops: they
+         *     abut rather than overlap, and two semi-transparent strokes never
+         *     stack into a darker patch
+         *   - the curve ends at x 46 and the elbow's bottom border runs on to
+         *     its own right edge, x 70, where the horizontal rail starts
+         *   - elbow and horizontal rail are both pinned to bottom 16px. The
+         *     grid is the last child and the group has no bottom padding, so
+         *     that offset resolves to the same line for the elbow (in the
+         *     group) and the rail (in the grid)
          *   - a 34px node at bottom 0 of a wrapper padded 46px has its centre
          *     17px up, which is the rail's centre line
          */}
         <div className="relative pt-9 pl-[52px] min-[860px]:pt-12 min-[860px]:pl-24">
-          {/* Desktop only: the corner. A bordered box, so it survives reflow. */}
+          {/*
+           * The line, continued. Above 860px it stops 36px up: the elbow below
+           * is 20px tall and pinned 16px up, so the tail ends exactly where the
+           * curve begins. Below 860px there is no elbow and it runs to the
+           * group's bottom, which is the last card's bottom.
+           */}
           <div
-            className="post-elbow absolute top-0 bottom-[16px] left-[26px] hidden w-[44px] min-[860px]:block"
+            className="rail-tail absolute top-0 bottom-0 left-[15px] w-[2px] min-[860px]:bottom-[36px] min-[860px]:left-[26px]"
             aria-hidden="true"
           />
 
-          {/* Mobile only: the rail carries straight on down through the cards. */}
+          {/* Desktop only: the corner. A bordered box, so it survives reflow. */}
           <div
-            className="post-rail-v absolute top-0 bottom-0 left-[15px] w-[2px] overflow-hidden rounded min-[860px]:hidden"
+            className="post-elbow absolute bottom-[16px] left-[26px] hidden h-[20px] w-[44px] min-[860px]:block"
             aria-hidden="true"
           />
 
@@ -467,7 +480,7 @@ export function TimelineSection() {
              * as a percentage it stays correct at every width.
              */}
             <li
-              className="post-rail-h absolute bottom-[16px] left-[-26px] right-[calc(16.6667%-6.667px)] hidden h-[2px] overflow-hidden min-[860px]:block"
+              className="post-rail-h absolute bottom-[16px] left-[-26px] right-[calc(16.6667%-6.667px)] hidden h-[2px] min-[860px]:block"
               aria-hidden="true"
             />
 

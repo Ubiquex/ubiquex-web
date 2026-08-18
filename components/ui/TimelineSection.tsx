@@ -240,24 +240,116 @@ const steps: Step[] = [
   },
 ];
 
-function InfoIcon() {
+/* ---------- post-ship group ---------- */
+
+/* 15px stroke glyphs, inheriting the node's accent through currentColor. */
+const iconProps = {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 2,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+  className: "h-[15px] w-[15px]",
+  "aria-hidden": true,
+};
+
+function HistoryIcon() {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="mt-[2px] h-4 w-4 shrink-0 text-brand min-[860px]:h-[17px] min-[860px]:w-[17px]"
-      aria-hidden="true"
-    >
-      <circle cx="12" cy="12" r="9" />
-      <path d="M12 11v5" />
-      <path d="M12 8h.01" />
+    <svg {...iconProps}>
+      <path d="M3.5 9a9 9 0 1 0 2.4-4.1L3 8" />
+      <path d="M3 3.5V8h4.5" />
+      <path d="M12 8v4.4l3 1.8" />
     </svg>
   );
 }
+
+function RadarIcon() {
+  return (
+    <svg {...iconProps}>
+      <path d="M12 21a9 9 0 1 0-9-9" />
+      <path d="M12 16.5a4.5 4.5 0 1 0-4.5-4.5" />
+      <path d="M12 12l6.5-6.5" />
+    </svg>
+  );
+}
+
+function SwapIcon() {
+  return (
+    <svg {...iconProps}>
+      <path d="M6 8h12" />
+      <path d="M15 5l3 3-3 3" />
+      <path d="M18 16H6" />
+      <path d="M9 13l-3 3 3 3" />
+    </svg>
+  );
+}
+
+type PostShip = {
+  key: string;
+  title: string;
+  chip: string;
+  icon: ReactNode;
+  body: string;
+  vars: CSSProperties;
+};
+
+/*
+ * The accents repeat step 5, step 1 and step 4 on purpose: green carries on
+ * from Ship, yellow marks the thing wanting attention, red marks the
+ * destructive option. Nothing here is numbered, and the nodes are smaller than
+ * the step nodes, so the group reads as a branch rather than steps 6 to 8.
+ */
+const postShip: PostShip[] = [
+  {
+    key: "why",
+    title: "why",
+    chip: "ubx why",
+    icon: <HistoryIcon />,
+    body: "Walk any resource back through the ledger to the proposal that created it, the intent behind that proposal, and the person who signed it.",
+    vars: {
+      "--node-accent": "#00A693",
+      "--card-accent": "#00C4AE",
+      "--card-accent-soft": "rgba(0,196,174,0.35)",
+      "--step-bloom": "#00A693",
+      "--step-bright": "#00C4AE",
+      "--chip-border": "rgba(0,166,147,0.30)",
+      "--chip-bg": "rgba(0,166,147,0.07)",
+    } as CSSProperties,
+  },
+  {
+    key: "drift",
+    title: "Drift detection",
+    chip: "ubx scan",
+    icon: <RadarIcon />,
+    body: "Reality diverging from the ledger is surfaced along with the actor, session and timestamp that caused it, correlated from provider audit logs.",
+    vars: {
+      "--node-accent": "#E49B0F",
+      "--card-accent": "#E49B0F",
+      "--card-accent-soft": "rgba(228,155,15,0.35)",
+      "--step-bloom": "#E49B0F",
+      "--step-bright": "#F0B429",
+      "--chip-border": "rgba(228,155,15,0.32)",
+      "--chip-bg": "rgba(228,155,15,0.08)",
+    } as CSSProperties,
+  },
+  {
+    key: "adopt",
+    title: "Adopt or revert",
+    chip: "signed either way",
+    icon: <SwapIcon />,
+    body: "Drift becomes a decision rather than a surprise. Adopt records reality into the ledger, revert restores the signed state. Both are proposals, and both are signed.",
+    vars: {
+      "--node-accent": "#E8404E",
+      "--card-accent": "#E8404E",
+      "--card-accent-soft": "rgba(232,64,78,0.35)",
+      "--step-bloom": "#CC2936",
+      "--step-bright": "#E8404E",
+      "--chip-border": "rgba(204,41,54,0.34)",
+      "--chip-bg": "rgba(204,41,54,0.08)",
+    } as CSSProperties,
+  },
+];
 
 export function TimelineSection() {
   return (
@@ -286,7 +378,7 @@ export function TimelineSection() {
 
         <ol className="relative mt-[42px] list-none pl-[52px] min-[860px]:mt-[66px] min-[860px]:pl-24">
           {/* The rail. Its gradient and travelling pulse live in globals.css. */}
-          <div className="rail absolute top-[30px] bottom-[46px] left-[15px] w-[2px] overflow-hidden rounded min-[860px]:left-[26px]">
+          <div className="rail absolute top-[30px] bottom-0 left-[15px] w-[2px] overflow-hidden rounded min-[860px]:left-[26px]">
             <div className="rail-pulse" />
           </div>
 
@@ -331,14 +423,83 @@ export function TimelineSection() {
           ))}
         </ol>
 
-        <div className="mt-9 flex items-start gap-[13px] border-t border-[#161b22] pt-[22px] min-[860px]:mt-[52px] min-[860px]:pt-7">
-          <InfoIcon />
-          <p className="text-[13px] leading-[1.62] text-muted min-[860px]:text-[14.5px]">
-            Months later,{" "}
-            <code className="font-mono text-brand-bright">ubx why</code> walks
-            any resource back through the ledger to the proposal that created
-            it, the intent behind that proposal, and the person who signed it.
+        {/*
+         * The post-ship group. The vertical rail runs on past step 5, elbows
+         * left-to-horizontal, and the three nodes sit on that horizontal rail.
+         *
+         * Geometry, in the group's own coordinate space (its padding-left
+         * matches the ol's, so the cards align with the step cards and the
+         * rail sits outside them at x 26 to 28):
+         *   - the elbow's left border occupies x 26 to 28, continuing the
+         *     vertical rail exactly; its 20px radius means the curve ends at
+         *     x 46 and its bottom border runs on to its own right edge, x 70
+         *   - the horizontal rail starts at x 70, so the two abut with neither
+         *     a gap nor an overlapping (and so doubly opaque) 2px
+         *   - both are pinned to bottom 16px. The grid is the last child and
+         *     the wrapper has no bottom padding, so that offset resolves to
+         *     the same line for the elbow (in the wrapper) and the rail (in
+         *     the grid)
+         *   - a 34px node at bottom 0 of a wrapper padded 46px has its centre
+         *     17px up, which is the rail's centre line
+         */}
+        <div className="relative pt-9 pl-[52px] min-[860px]:pt-12 min-[860px]:pl-24">
+          {/* Desktop only: the corner. A bordered box, so it survives reflow. */}
+          <div
+            className="post-elbow absolute top-0 bottom-[16px] left-[26px] hidden w-[44px] min-[860px]:block"
+            aria-hidden="true"
+          />
+
+          {/* Mobile only: the rail carries straight on down through the cards. */}
+          <div
+            className="post-rail-v absolute top-0 bottom-0 left-[15px] w-[2px] overflow-hidden rounded min-[860px]:hidden"
+            aria-hidden="true"
+          />
+
+          <p className="mb-5 font-mono text-[11px] tracking-[0.1em] text-dim uppercase">
+            once it ships
           </p>
+
+          <ul className="relative grid list-none grid-cols-1 gap-[14px] min-[860px]:grid-cols-3 min-[860px]:gap-5">
+            {/*
+             * Right edge lands on the centre of the third column: with three
+             * equal columns and a 20px gap that centre is W*5/6 minus g/3 from
+             * the left, so the inset from the right is W/6 minus g/3. Expressed
+             * as a percentage it stays correct at every width.
+             */}
+            <li
+              className="post-rail-h absolute bottom-[16px] left-[-26px] right-[calc(16.6667%-6.667px)] hidden h-[2px] overflow-hidden min-[860px]:block"
+              aria-hidden="true"
+            />
+
+            {postShip.map((op) => (
+              <li key={op.key} style={op.vars} className="relative min-[860px]:pb-[46px]">
+                {/*
+                 * Centred on the wrapper rather than placed at an x offset, so
+                 * the nodes track the cards as they grow. Below 860px it moves
+                 * out to the vertical rail: 26px wide, so its left edge is 49px
+                 * out (not the steps' 52px) to put its centre on the rail.
+                 */}
+                <div className="post-node absolute top-[16px] left-[-49px] z-[3] flex h-[26px] w-[26px] items-center justify-center rounded-full bg-[#0c0f15] min-[860px]:top-auto min-[860px]:bottom-0 min-[860px]:left-1/2 min-[860px]:h-[34px] min-[860px]:w-[34px] min-[860px]:-translate-x-1/2">
+                  {op.icon}
+                </div>
+
+                <div className="step-card relative overflow-hidden p-[20px_18px_22px] min-[860px]:p-[22px_24px_24px]">
+                  <div className="mb-[9px] flex flex-wrap items-baseline gap-3 min-[860px]:mb-[10px]">
+                    <h3 className="text-[15.5px] font-bold tracking-[-0.015em] text-[#f5f8fc] min-[860px]:text-[17px]">
+                      {op.title}
+                    </h3>
+                    <span className="step-chip rounded-md px-[7px] py-[3px] font-mono text-[9.5px] min-[860px]:px-[9px] min-[860px]:text-[10.5px]">
+                      {op.chip}
+                    </span>
+                  </div>
+
+                  <p className="text-[13.5px] leading-[1.6] text-[#9aa3ae]">
+                    {op.body}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

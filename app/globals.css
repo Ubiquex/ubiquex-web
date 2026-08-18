@@ -394,3 +394,42 @@ body {
     opacity: 0;
   }
 }
+
+/*
+ * Post-ship group: three ongoing operations hanging off the rail below step 5.
+ *
+ * The elbow is a bordered box rather than an SVG. Only its left and bottom
+ * borders are drawn, and the bottom-left radius supplies the curve, so the
+ * corner scales with the container instead of depending on fixed coordinates
+ * that would break when the cards reflow.
+ */
+.post-elbow {
+  border-left: 2px solid rgba(0, 166, 147, 0.42);
+  border-bottom: 2px solid rgba(0, 166, 147, 0.42);
+  border-top: 0;
+  border-right: 0;
+  border-bottom-left-radius: 20px;
+}
+
+/* Both rails carry the same treatment as the vertical one: a muted gradient
+   through the three card accents, at the rail's .42 opacity. */
+.post-rail-h::before,
+.post-rail-v::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.42;
+}
+.post-rail-h::before {
+  background: linear-gradient(90deg, #00a693 0%, #e49b0f 52%, #e8404e 100%);
+}
+.post-rail-v::before {
+  background: linear-gradient(#00a693 0%, #e49b0f 52%, #e8404e 100%);
+}
+
+/* Smaller than the numbered step nodes, and carrying an icon rather than a
+   number, so the group does not read as steps six through eight. */
+.post-node {
+  color: var(--node-accent);
+  border: 1.5px solid var(--node-accent);
+}

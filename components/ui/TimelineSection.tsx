@@ -376,143 +376,171 @@ export function TimelineSection() {
           </p>
         </header>
 
-        <ol className="relative mt-[42px] list-none pl-[52px] min-[860px]:mt-[66px] min-[860px]:pl-24">
-          {/* The rail. Its gradient and travelling pulse live in globals.css. */}
-          <div className="rail absolute top-[30px] bottom-0 left-[15px] w-[2px] overflow-hidden min-[860px]:left-[26px]">
-            <div className="rail-pulse" />
-          </div>
-
-          {steps.map((step, index) => (
-            <li
-              key={step.n}
-              style={step.vars}
-              className={`relative ${index === steps.length - 1 ? "pb-0" : "pb-[26px] min-[860px]:pb-[38px]"}`}
-            >
-              <div className="step-node absolute top-[16px] left-[-52px] z-[3] flex h-8 w-8 items-center justify-center rounded-full bg-[#0c0f15] font-mono text-[13px] font-medium min-[860px]:top-[22px] min-[860px]:left-[-96px] min-[860px]:h-[54px] min-[860px]:w-[54px] min-[860px]:text-[18px]">
-                {step.n}
-              </div>
-
-              <div className="step-card relative overflow-hidden p-[22px_20px_24px] min-[860px]:p-[30px_34px_32px]">
-                <div className="mb-[9px] flex flex-wrap items-baseline gap-3 min-[860px]:mb-3">
-                  <h3 className="text-[17.5px] font-bold tracking-[-0.015em] text-[#f5f8fc] min-[860px]:text-[22px]">
-                    {step.title}
-                  </h3>
-                  <span className="step-chip rounded-md px-[7px] py-[3px] font-mono text-[9.5px] min-[860px]:px-[9px] min-[860px]:text-[10.5px]">
-                    {step.chip}
-                  </span>
-                </div>
-
-                <p className="text-[13.5px] leading-[1.68] text-[#9aa3ae] min-[860px]:max-w-[660px] min-[860px]:text-[14.5px]">
-                  {step.paragraph}
-                </p>
-
-                {step.extra}
-
-                <ul className="mt-4 flex list-none flex-wrap gap-2 min-[860px]:mt-5">
-                  {step.pills.map((pill) => (
-                    <li
-                      key={pill}
-                      className="rounded-[7px] border border-[#232935] bg-[rgba(255,255,255,0.03)] px-[9px] py-[5px] font-mono text-[10px] text-[#aab2bd] min-[860px]:px-[11px] min-[860px]:py-[6px] min-[860px]:text-[11px]"
-                    >
-                      {pill}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </li>
-          ))}
-        </ol>
-
         {/*
-         * The post-ship group. The line runs on past step 5, elbows
-         * left-to-horizontal, and the three nodes sit on that horizontal rail.
+         * One relative wrapper over the steps and the post-ship group, so the
+         * travelling pulse has a single box to cross. The colour is still drawn
+         * in two pieces (the gradient scoped to the ol, the neutral scoped to
+         * the group), but the pulse cannot be: an element only animates inside
+         * its own containing block, so while it lived in the rail it died at
+         * the end of step 5 and the last stretch of line was never lit.
          *
-         * Padding rather than margin on the top edge, so the group's box
-         * starts exactly where the ol's ends and the tail below picks the line
-         * up with nothing between them.
-         *
-         * Geometry, in the group's own coordinate space (its padding-left
-         * matches the ol's, so the cards align with the step cards and the
-         * line sits outside them at x 26 to 28):
-         *   - the tail occupies x 26 to 28, the same column as the ol's rail,
-         *     so there is no sideways jog where one hands over to the other
-         *   - the elbow is 20px tall with a 20px radius, so it is only the
-         *     curve. Its left border occupies the same x 26 to 28 and its top
-         *     edge sits at bottom 36px, which is where the tail stops: they
-         *     abut rather than overlap, and two semi-transparent strokes never
-         *     stack into a darker patch
-         *   - the curve ends at x 46 and the elbow's bottom border runs on to
-         *     its own right edge, x 70, where the horizontal rail starts
-         *   - elbow and horizontal rail are both pinned to bottom 16px. The
-         *     grid is the last child and the group has no bottom padding, so
-         *     that offset resolves to the same line for the elbow (in the
-         *     group) and the rail (in the grid)
-         *   - a 34px node at bottom 0 of a wrapper padded 46px has its centre
-         *     17px up, which is the rail's centre line
+         * The margin sits here rather than on the ol, so the wrapper's top edge
+         * is the ol's top edge and the 30px offsets below still mean what they
+         * meant when the rail was the ol's own child.
          */}
-        <div className="relative pt-9 pl-[52px] min-[860px]:pt-12 min-[860px]:pl-24">
-          {/*
-           * The line, continued. Above 860px it stops 36px up: the elbow below
-           * is 20px tall and pinned 16px up, so the tail ends exactly where the
-           * curve begins. Below 860px there is no elbow and it runs to the
-           * group's bottom, which is the last card's bottom.
-           */}
-          <div
-            className="rail-tail absolute top-0 bottom-0 left-[15px] w-[2px] min-[860px]:bottom-[36px] min-[860px]:left-[26px]"
-            aria-hidden="true"
-          />
+        <div className="relative mt-[42px] min-[860px]:mt-[66px]">
+          <ol className="relative list-none pl-[52px] min-[860px]:pl-24">
+            {/* The rail's gradient. The pulse that runs it is further down. */}
+            <div className="rail absolute top-[30px] bottom-0 left-[15px] w-[2px] min-[860px]:left-[26px]" />
 
-          {/* Desktop only: the corner. A bordered box, so it survives reflow. */}
-          <div
-            className="post-elbow absolute bottom-[16px] left-[26px] hidden h-[20px] w-[44px] min-[860px]:block"
-            aria-hidden="true"
-          />
-
-          <p className="mb-5 font-mono text-[11px] tracking-[0.1em] text-dim uppercase">
-            once it ships
-          </p>
-
-          <ul className="relative grid list-none grid-cols-1 gap-[14px] min-[860px]:grid-cols-3 min-[860px]:gap-5">
-            {/*
-             * Right edge lands on the centre of the third column: with three
-             * equal columns and a 20px gap that centre is W*5/6 minus g/3 from
-             * the left, so the inset from the right is W/6 minus g/3. Expressed
-             * as a percentage it stays correct at every width.
-             */}
-            <li
-              className="post-rail-h absolute bottom-[16px] left-[-26px] right-[calc(16.6667%-6.667px)] hidden h-[2px] min-[860px]:block"
-              aria-hidden="true"
-            />
-
-            {postShip.map((op) => (
-              <li key={op.key} style={op.vars} className="relative min-[860px]:pb-[46px]">
-                {/*
-                 * Centred on the wrapper rather than placed at an x offset, so
-                 * the nodes track the cards as they grow. Below 860px it moves
-                 * out to the vertical rail: 26px wide, so its left edge is 49px
-                 * out (not the steps' 52px) to put its centre on the rail.
-                 */}
-                <div className="post-node absolute top-[16px] left-[-49px] z-[3] flex h-[26px] w-[26px] items-center justify-center rounded-full bg-[#0c0f15] min-[860px]:top-auto min-[860px]:bottom-0 min-[860px]:left-1/2 min-[860px]:h-[34px] min-[860px]:w-[34px] min-[860px]:-translate-x-1/2">
-                  {op.icon}
+            {steps.map((step, index) => (
+              <li
+                key={step.n}
+                style={step.vars}
+                className={`relative ${index === steps.length - 1 ? "pb-0" : "pb-[26px] min-[860px]:pb-[38px]"}`}
+              >
+                <div className="step-node absolute top-[16px] left-[-52px] z-[3] flex h-8 w-8 items-center justify-center rounded-full bg-[#0c0f15] font-mono text-[13px] font-medium min-[860px]:top-[22px] min-[860px]:left-[-96px] min-[860px]:h-[54px] min-[860px]:w-[54px] min-[860px]:text-[18px]">
+                  {step.n}
                 </div>
 
-                <div className="step-card relative overflow-hidden p-[20px_18px_22px] min-[860px]:p-[22px_24px_24px]">
-                  <div className="mb-[9px] flex flex-wrap items-baseline gap-3 min-[860px]:mb-[10px]">
-                    <h3 className="text-[15.5px] font-bold tracking-[-0.015em] text-[#f5f8fc] min-[860px]:text-[17px]">
-                      {op.title}
+                <div className="step-card relative overflow-hidden p-[22px_20px_24px] min-[860px]:p-[30px_34px_32px]">
+                  <div className="mb-[9px] flex flex-wrap items-baseline gap-3 min-[860px]:mb-3">
+                    <h3 className="text-[17.5px] font-bold tracking-[-0.015em] text-[#f5f8fc] min-[860px]:text-[22px]">
+                      {step.title}
                     </h3>
                     <span className="step-chip rounded-md px-[7px] py-[3px] font-mono text-[9.5px] min-[860px]:px-[9px] min-[860px]:text-[10.5px]">
-                      {op.chip}
+                      {step.chip}
                     </span>
                   </div>
 
-                  <p className="text-[13.5px] leading-[1.6] text-[#9aa3ae]">
-                    {op.body}
+                  <p className="text-[13.5px] leading-[1.68] text-[#9aa3ae] min-[860px]:max-w-[660px] min-[860px]:text-[14.5px]">
+                    {step.paragraph}
                   </p>
+
+                  {step.extra}
+
+                  <ul className="mt-4 flex list-none flex-wrap gap-2 min-[860px]:mt-5">
+                    {step.pills.map((pill) => (
+                      <li
+                        key={pill}
+                        className="rounded-[7px] border border-[#232935] bg-[rgba(255,255,255,0.03)] px-[9px] py-[5px] font-mono text-[10px] text-[#aab2bd] min-[860px]:px-[11px] min-[860px]:py-[6px] min-[860px]:text-[11px]"
+                      >
+                        {pill}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </li>
             ))}
-          </ul>
+          </ol>
+
+          {/*
+           * The post-ship group. The line runs on past step 5, elbows
+           * left-to-horizontal, and the three nodes sit on that horizontal rail.
+           *
+           * Padding rather than margin on the top edge, so the group's box
+           * starts exactly where the ol's ends and the tail below picks the line
+           * up with nothing between them.
+           *
+           * Geometry, in the group's own coordinate space (its padding-left
+           * matches the ol's, so the cards align with the step cards and the
+           * line sits outside them at x 26 to 28):
+           *   - the tail occupies x 26 to 28, the same column as the ol's rail,
+           *     so there is no sideways jog where one hands over to the other
+           *   - the elbow is 20px tall with a 20px radius, so it is only the
+           *     curve. Its left border occupies the same x 26 to 28 and its top
+           *     edge sits at bottom 36px, which is where the tail stops: they
+           *     abut rather than overlap, and two semi-transparent strokes never
+           *     stack into a darker patch
+           *   - the curve ends at x 46 and the elbow's bottom border runs on to
+           *     its own right edge, x 70, where the horizontal rail starts
+           *   - elbow and horizontal rail are both pinned to bottom 16px. The
+           *     grid is the last child and the group has no bottom padding, so
+           *     that offset resolves to the same line for the elbow (in the
+           *     group) and the rail (in the grid)
+           *   - a 34px node at bottom 0 of a wrapper padded 46px has its centre
+           *     17px up, which is the rail's centre line
+           */}
+          <div className="relative pt-9 pl-[52px] min-[860px]:pt-12 min-[860px]:pl-24">
+            {/*
+             * The line, continued. Above 860px it stops 36px up: the elbow below
+             * is 20px tall and pinned 16px up, so the tail ends exactly where the
+             * curve begins. Below 860px there is no elbow and it runs to the
+             * group's bottom, which is the last card's bottom.
+             */}
+            <div
+              className="rail-tail absolute top-0 bottom-0 left-[15px] w-[2px] min-[860px]:bottom-[36px] min-[860px]:left-[26px]"
+              aria-hidden="true"
+            />
+
+            {/* Desktop only: the corner. A bordered box, so it survives reflow. */}
+            <div
+              className="post-elbow absolute bottom-[16px] left-[26px] hidden h-[20px] w-[44px] min-[860px]:block"
+              aria-hidden="true"
+            />
+
+            <p className="mb-5 font-mono text-[11px] tracking-[0.1em] text-dim uppercase">
+              once it ships
+            </p>
+
+            <ul className="relative grid list-none grid-cols-1 gap-[14px] min-[860px]:grid-cols-3 min-[860px]:gap-5">
+              {/*
+               * Right edge lands on the centre of the third column: with three
+               * equal columns and a 20px gap that centre is W*5/6 minus g/3 from
+               * the left, so the inset from the right is W/6 minus g/3. Expressed
+               * as a percentage it stays correct at every width.
+               */}
+              <li
+                className="post-rail-h absolute bottom-[16px] left-[-26px] right-[calc(16.6667%-6.667px)] hidden h-[2px] min-[860px]:block"
+                aria-hidden="true"
+              />
+
+              {postShip.map((op) => (
+                <li key={op.key} style={op.vars} className="relative min-[860px]:pb-[46px]">
+                  {/*
+                   * Centred on the wrapper rather than placed at an x offset, so
+                   * the nodes track the cards as they grow. Below 860px it moves
+                   * out to the vertical rail: 26px wide, so its left edge is 49px
+                   * out (not the steps' 52px) to put its centre on the rail.
+                   */}
+                  <div className="post-node absolute top-[16px] left-[-49px] z-[3] flex h-[26px] w-[26px] items-center justify-center rounded-full bg-[#0c0f15] min-[860px]:top-auto min-[860px]:bottom-0 min-[860px]:left-1/2 min-[860px]:h-[34px] min-[860px]:w-[34px] min-[860px]:-translate-x-1/2">
+                    {op.icon}
+                  </div>
+
+                  <div className="step-card relative overflow-hidden p-[20px_18px_22px] min-[860px]:p-[22px_24px_24px]">
+                    <div className="mb-[9px] flex flex-wrap items-baseline gap-3 min-[860px]:mb-[10px]">
+                      <h3 className="text-[15.5px] font-bold tracking-[-0.015em] text-[#f5f8fc] min-[860px]:text-[17px]">
+                        {op.title}
+                      </h3>
+                      <span className="step-chip rounded-md px-[7px] py-[3px] font-mono text-[9.5px] min-[860px]:px-[9px] min-[860px]:text-[10.5px]">
+                        {op.chip}
+                      </span>
+                    </div>
+
+                    <p className="text-[13.5px] leading-[1.6] text-[#9aa3ae]">
+                      {op.body}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/*
+           * The pulse, over the whole run. It clips to the same column the rail
+           * and the tail occupy and stops where they stop: at the elbow's curve
+           * above 860px, at the last card's bottom below it.
+           *
+           * Last child of the wrapper, so it paints over both segments. The
+           * nodes carry z-3 and still sit on top of it, which is what lets the
+           * pulse pass behind them rather than washing them out.
+           */}
+          <div
+            className="rail-run absolute top-[30px] bottom-0 left-[15px] w-[2px] overflow-hidden min-[860px]:bottom-[36px] min-[860px]:left-[26px]"
+            aria-hidden="true"
+          >
+            <div className="rail-pulse" />
+          </div>
         </div>
       </div>
     </section>

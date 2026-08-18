@@ -273,6 +273,14 @@ body {
   );
 }
 
+/*
+ * The travelling pulse. It lives in .rail-run, which spans the steps and the
+ * post-ship group together, rather than in .rail, which stops at the end of
+ * step 5 -- an absolutely positioned element animates inside its own
+ * containing block and nowhere else, so in .rail the last few hundred pixels
+ * of line never lit up. 5.4s rather than 4.6s keeps roughly the old speed over
+ * the now longer run.
+ */
 .rail-pulse {
   position: absolute;
   left: 0;
@@ -280,7 +288,7 @@ body {
   height: 130px;
   background: linear-gradient(transparent, #ffffff, transparent);
   opacity: 0.5;
-  animation: railrun 4.6s linear infinite;
+  animation: railrun 5.4s linear infinite;
 }
 @keyframes railrun {
   from {

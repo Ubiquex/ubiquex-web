@@ -13,6 +13,10 @@ The Ubiquex marketing/product site (Next.js — `app/`, `components/`,
   self-merge, matching every repo in this org except `ubiquex` itself and
   `ubiquex-docs` (both explicitly confirmed direct-push, for stated reasons
   recorded in their own `CLAUDE.md`).
+- Before pushing more commits to a branch with an open PR, confirm it is
+  STILL open (`gh pr list --state open` or `gh pr view <n>`) — a merged PR's
+  branch looks identical to any other from `git status` alone, and a push
+  after merge lands nowhere near `main`, silently.
 - NO AI attribution anywhere in commits or PR bodies.
 
 ## Before touching anything

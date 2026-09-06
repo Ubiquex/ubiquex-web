@@ -456,10 +456,11 @@
 <span class="kw">+</span> <span class="type">aws.sqs.Queue</span>             settlements   <span class="com">retention 4d</span>
 <span class="prop">~</span> <span class="type">aws.ec2.SecurityGroup</span>     db-access     <span class="str">1 rule added</span>
 
-<span class="com">blast radius</span>  <span class="kw">+3</span> <span class="prop">~1</span> <span class="str">-0</span></div>
+<span class="com">blast radius</span>  <span class="kw">+3</span> <span class="prop">~1</span> <span class="str">-0</span>
+<span class="com">pinned</span>        <span class="type">network</span> <span class="com">@</span> <span class="prop">4b1e77a2c3d4</span></div>
       <div class="terminal-note">
         <div class="note-head">&#9670; SUMMARY</div>
-        <p>Adds a primary Postgres instance with a read replica in a second availability zone, plus a settlement queue holding four days of messages. The existing security group gains one ingress rule scoped to the new database, so nothing becomes publicly reachable.</p>
+        <p>Adds a primary Postgres instance with a read replica in a second availability zone, plus a settlement queue holding four days of messages. The existing security group gains one ingress rule scoped to the new database, so nothing becomes publicly reachable. Both instances sit inside the existing VPC.</p>
       </div>
       <div class="terminal-foot">
         <span>hash frozen · stale on drift</span>

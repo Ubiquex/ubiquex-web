@@ -1,72 +1,41 @@
-import { Hero } from "@/components/ui/Hero";
-import { MediumsSection } from "@/components/ui/MediumsSection";
-import { TimelineSection } from "@/components/ui/TimelineSection";
-import { MarkdownSection } from "@/components/ui/MarkdownSection";
-import { SdkSection } from "@/components/ui/SdkSection";
-import { DiagramSection } from "@/components/ui/DiagramSection";
+import { PageShell } from "@ubx/docs-ui";
 import { Surface } from "@/components/ui/Surface";
-import type { SurfaceTone } from "@/components/ui/Surface";
+import { Container } from "@/components/ui/Container";
+import { PlanWindow } from "@/components/home/PlanWindow";
+import { StatsBand } from "@/components/home/StatsBand";
+import { StepFlow, AiAndEcosystem, ClosingCta } from "@/components/home/Sections";
+import { SdkTabs, HclSection, LedgerSection } from "@/components/home/CodeSections";
+import { NAV, FOOTER } from "@/lib/site";
 
-// Nav and Footer are rendered once in app/layout.tsx so every route gets them;
-// the homepage supplies only its own content.
-
-/*
- * Surface alternation lives here, at the composition point, rather than as a
- * background class inside each section. Reordering the lists below re-tones the
- * whole page; no section knows or cares which band it sits on.
- *
- * The hero and the mediums circuit read as one opening block on the base
- * surface. Alternation starts at the timeline, which has to be raised because
- * it carries the bloom.
- *
- * Strict alternation across all six sections is not satisfiable: the hero must
- * be base, the timeline must be raised, and the section before the footer must
- * be base, which together need an odd number of sections. Holding the intro as
- * one block resolves it and keeps every other assignment exact.
- */
-const INTRO = [
-  { key: "hero", Section: Hero },
-  { key: "mediums", Section: MediumsSection },
-];
-
-const ALTERNATING = [
-  { key: "timeline", Section: TimelineSection, glow: true },
-  { key: "markdown", Section: MarkdownSection },
-  { key: "sdk", Section: SdkSection },
-  { key: "diagram", Section: DiagramSection },
-];
-
-const toneAt = (index: number): SurfaceTone =>
-  index % 2 === 0 ? "raised" : "base";
-
-/*
- * The footer is raised, so the last section here must be base or the two would
- * meet on the same surface with only a hairline between them. This runs at
- * build time in a server component, so breaking the invariant fails the build
- * instead of shipping quietly.
- */
-if (toneAt(ALTERNATING.length - 1) !== "base") {
-  throw new Error(
-    `Surface alternation broken: ALTERNATING has ${ALTERNATING.length} entries, ` +
-      "which ends on surface-1. The section before the footer must be surface-0. " +
-      "Add or remove a section to restore the alternation.",
-  );
-}
-
+// showThemeToggle={false}: this site is dark-only and defines no light
+// palette, so a toggle would switch between dark and dark. Recorded in
+// full in app/globals.css's alias layer, including that a light palette
+// is the real fix and that this flag should be removed rather than
+// flipped when one exists.
 export default function HomePage() {
   return (
-    <>
-      {INTRO.map(({ key, Section }, index) => (
-        <Surface key={key} tone="base" seam={index > 0}>
-          <Section />
-        </Surface>
-      ))}
+    <PageShell nav={NAV} footer={FOOTER} showThemeToggle={false}>
+      <Container className="pt-16 pb-20">
+        <h1 className="max-w-3xl text-4xl font-medium leading-tight text-primary md:text-5xl">
+          Every infrastructure change, <span className="text-brand-bright">recorded and signed</span>
+        </h1>
+        <p className="mt-5 max-w-2xl text-lg leading-relaxed text-body">
+          ubx turns a change into a typed, hashed proposal you read before it happens.
+          What an assistant assumed is listed for you to sign. Nothing reaches your
+          cloud until you accept it.
+        </p>
+        <div className="mt-10">
+          <PlanWindow />
+        </div>
+      </Container>
 
-      {ALTERNATING.map(({ key, Section, glow }, index) => (
-        <Surface key={key} tone={toneAt(index)} glow={glow}>
-          <Section />
-        </Surface>
-      ))}
-    </>
+      <Surface tone="raised"><StatsBand /></Surface>
+      <Surface tone="base"><StepFlow /></Surface>
+      <Surface tone="raised"><SdkTabs /></Surface>
+      <Surface tone="base"><HclSection /></Surface>
+      <Surface tone="raised"><LedgerSection /></Surface>
+      <Surface tone="base"><AiAndEcosystem /></Surface>
+      <Surface tone="raised"><ClosingCta /></Surface>
+    </PageShell>
   );
 }

@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Tailwind v4 skips node_modules, so classes used only inside
+   @ubx/docs-ui would never be generated and the shared chrome would
+   render unstyled. Load-bearing, not a nicety. */
+@source "../node_modules/@ubx/docs-ui/dist";
+
 /*
  * Ubiquex design tokens.
  *
@@ -528,4 +533,58 @@ body {
 .post-node {
   color: var(--node-accent);
   border: 1.5px solid var(--node-accent);
+}
+
+/* ---------------------------------------------------------------------
+ * @ubx/docs-ui alias layer.
+ *
+ * The shared header, footer and CodeBlock are styled against the docs
+ * sites' token names, which this site does not use: it says --color-ink
+ * where they say --color-background, --color-primary where they say
+ * --color-foreground. Without these aliases the shared chrome renders
+ * almost entirely unstyled, the same failure the two docs sites hit when
+ * Tailwind was not scanning node_modules.
+ *
+ * One name genuinely collides, and it is deliberately NOT aliased below.
+ * --color-primary is BODY TEXT here (#f0f6fc, 26 usages across 12 files)
+ * and the Persian green ACCENT in the docs sites. Aliasing it would turn
+ * body copy green across the whole marketing site; renaming 26 usages to
+ * free the name is a bigger change than this deserves.
+ *
+ * So it is left alone, and the visible consequence is recorded here
+ * rather than discovered: in the shared Header the CURRENT nav item uses
+ * text-primary, so on this site it renders white instead of green. It is
+ * still distinct from the muted grey of the other items, so the current
+ * item is still marked, just in a different colour than the docs sites
+ * mark theirs. If that ever matters, the fix is renaming this site's
+ * --color-primary to --color-text-body and aliasing the accent properly.
+ *
+ * TWO RECORDED DECISIONS, both compromises rather than positions:
+ *
+ * 1. NO THEME TOGGLE HERE. This site is dark-only: it defines no light
+ *    palette and no [data-theme] or prefers-color-scheme rules at all.
+ *    PageShell is given showThemeToggle={false} so it does not ship a
+ *    control that switches between dark and dark. The docs sites both
+ *    have one, so this is a visible inconsistency between the three
+ *    surfaces, and it is deliberate.
+ *
+ * 2. A LIGHT PALETTE IS THE REAL FIX. These aliases only resolve to dark
+ *    values, so the shared components inherit dark-only behaviour along
+ *    with the tokens. Designing a light palette for this site properly is
+ *    the actual answer, and when someone has time to do that, the
+ *    showThemeToggle={false} in app/page.tsx and app/blog should go away
+ *    rather than being flipped to true.
+ * ------------------------------------------------------------------ */
+@theme {
+  --color-background: var(--color-ink);
+  --color-surface: var(--color-surface-1);
+  --color-foreground: var(--color-primary);
+  --color-foreground-muted: var(--color-muted);
+  --color-border: var(--color-line);
+  --color-field: var(--color-panel);
+  --color-code-bg: var(--color-panel);
+  --color-primary-foreground: var(--color-ink);
+  --color-code-green: var(--color-code-type);
+  --color-code-red: var(--color-code-string);
+  --color-code-yellow: var(--color-code-number);
 }

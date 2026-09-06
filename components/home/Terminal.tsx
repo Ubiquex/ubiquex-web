@@ -30,9 +30,15 @@
 // settled that design question by accident, in a marketing page.
 //
 // The summary's second paragraph went with them, because its first
-// sentence was a cost claim. Its second, about the VPC and the
-// cross-stack pin, is genuinely knowable and could be folded into the
-// paragraph above if wanted.
+// sentence was a cost claim.
+//
+// Its second sentence came back, split in two. "Both instances sit
+// inside the existing VPC" is folded into the paragraph above, where an
+// author could genuinely write it. The pinned head is now its own
+// receipt line, because it could never have been prose: Intent.Summary
+// is written by the author's own program before resolution computes any
+// head, and nothing rewrites it afterwards. `ubx plan` renders that line
+// from Resolution.Inputs, which the resolver already records.
 //
 // Still hand-coloured, per the note above. Keep in step with
 // design/home-reference.html, which carries the identical block.
@@ -60,7 +66,9 @@ export function Terminal() {
         {"     db-access     "}<span className="str">1 rule added</span>
         {`\n\n`}
         <span className="com">blast radius</span>{"  "}<span className="kw">+3</span>{" "}
-        <span className="prop">~1</span> <span className="str">-0</span>
+        <span className="prop">~1</span> <span className="str">-0</span>{"\n"}
+          <span className="com">pinned</span>{"        "}<span className="type">network</span>
+          {" "}<span className="com">@</span> <span className="prop">4b1e77a2c3d4</span>
       </div>
       <div className="terminal-note">
         <div className="note-head">&#9670; SUMMARY</div>
@@ -68,7 +76,7 @@ export function Terminal() {
           Adds a primary Postgres instance with a read replica in a second availability
           zone, plus a settlement queue holding four days of messages. The existing
           security group gains one ingress rule scoped to the new database, so nothing
-          becomes publicly reachable.
+          becomes publicly reachable. Both instances sit inside the existing VPC.
         </p>
       </div>
       <div className="terminal-foot">

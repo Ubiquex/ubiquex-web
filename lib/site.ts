@@ -5,7 +5,7 @@ import type { NavLink } from "@ubx/docs-ui";
 // ubiquex.io, docs.ubiquex.io and providers.ubiquex.io should not have
 // to relearn the header.
 export const NAV: NavLink[] = [
-  { label: "Home", href: "/", current: true },
+  { label: "Home", href: "/" },
   { label: "Install", href: "https://docs.ubiquex.io/install" },
   { label: "Documentation", href: "https://docs.ubiquex.io" },
   { label: "Tutorials", href: "https://docs.ubiquex.io/tutorial" },

@@ -1,4 +1,22 @@
 import type { MDXComponents } from "mdx/types";
+import { CodeBlock } from "@ubx/docs-ui";
+
+/**
+ * Flattens an MDX child tree to its text.
+ *
+ * A fence's content is not always a single string: MDX splits it around
+ * anything it parses inside, so reading `children` directly loses whole
+ * lines from longer blocks.
+ */
+function textOf(node: React.ReactNode): string {
+  if (typeof node === "string") return node;
+  if (typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(textOf).join("");
+  if (node && typeof node === "object" && "props" in node) {
+    return textOf((node as { props: { children?: React.ReactNode } }).props.children);
+  }
+  return "";
+}
 
 /**
  * Element styling for MDX content.
@@ -48,12 +66,27 @@ const components: MDXComponents = {
       {...props}
     />
   ),
-  pre: (props) => (
-    <pre
-      className="my-6 overflow-x-auto rounded-lg border border-line bg-panel p-4 font-mono text-sm"
-      {...props}
-    />
-  ),
+  // Fenced blocks go through the shared CodeBlock, which is what
+  // highlights them. This mapped straight to a styled <pre>, so every
+  // code block in every post rendered as one flat colour: the built
+  // pages contained zero shiki spans. The home page's own panels were
+  // already using CodeBlock, so the blog was the only surface on the
+  // site with no highlighting at all.
+  //
+  // The wrapping div carries the vertical rhythm because CodeBlock sets
+  // no margin of its own, by design: the home page places it inside a
+  // grid where a margin would be wrong.
+  pre: (props) => {
+    const child = props.children as
+      | React.ReactElement<{ className?: string; children?: React.ReactNode }>
+      | undefined;
+    const lang = (child?.props?.className ?? "").replace(/^language-/, "") || "text";
+    return (
+      <div className="my-6">
+        <CodeBlock code={textOf(child?.props?.children)} lang={lang} />
+      </div>
+    );
+  },
   hr: (props) => <hr className="my-10 border-line" {...props} />,
   strong: (props) => <strong className="font-semibold text-primary" {...props} />,
   table: (props) => (

@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { PageShell } from "@ubx/docs-ui";
+import { NAV, FOOTER } from "@/lib/site";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/Container";
@@ -39,32 +41,34 @@ export default async function BlogPostPage({
   );
 
   return (
-    <Container width="prose">
-      <article className="py-20">
-        <header className="mb-10">
-          <time
-            dateTime={post.date}
-            className="font-mono text-xs tracking-wide text-muted uppercase"
-          >
-            {formatDate(post.date)}
-          </time>
-          <h1 className="mt-3 text-4xl font-semibold tracking-tight text-primary">
-            {post.title}
-          </h1>
-          <p className="mt-4 text-lg text-muted">{post.description}</p>
-        </header>
+    <PageShell nav={NAV} footer={FOOTER} showThemeToggle={false}>
+      <Container width="prose">
+        <article className="py-20">
+          <header className="mb-10">
+            <time
+              dateTime={post.date}
+              className="font-mono text-xs tracking-wide text-muted uppercase"
+            >
+              {formatDate(post.date)}
+            </time>
+            <h1 className="mt-3 text-4xl font-semibold tracking-tight text-primary">
+              {post.title}
+            </h1>
+            <p className="mt-4 text-lg text-muted">{post.description}</p>
+          </header>
 
-        <PostBody />
+          <PostBody />
 
-        <footer className="mt-16 border-t border-line pt-8">
-          <Link
-            href="/blog"
-            className="text-sm text-accent-bright hover:text-brand-bright"
-          >
-            &larr; All posts
-          </Link>
-        </footer>
-      </article>
-    </Container>
+          <footer className="mt-16 border-t border-line pt-8">
+            <Link
+              href="/blog"
+              className="text-sm text-accent-bright hover:text-brand-bright"
+            >
+              &larr; All posts
+            </Link>
+          </footer>
+        </article>
+      </Container>
+    </PageShell>
   );
 }

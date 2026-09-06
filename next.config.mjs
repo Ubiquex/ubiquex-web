@@ -12,13 +12,9 @@ const nextConfig = {
   // so URLs resolve identically on GitHub Pages and any other static host.
   trailingSlash: true,
 
-  // The site is served from a GitHub project page,
-  // https://ubiquex.github.io/ubiquex-web, so every route and asset URL needs
-  // the repo-name prefix. Without it the HTML loads but all CSS and JS 404.
-  //
-  // REMOVE THIS AT CUSTOM-DOMAIN CUTOVER. Once the site is served from an apex
-  // domain, basePath must go or every URL gains a bogus /ubiquex-web segment.
-  basePath: "/ubiquex-web",
+  // No basePath: the site is served from the apex, ubiquex.io, behind
+  // CloudFront rather than from a GitHub project page. The old
+  // "/ubiquex-web" prefix would put a bogus segment in every URL.
 
   pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
 };

@@ -38,6 +38,18 @@
      ground from the body below it; and it did not match the docs sites,
      whose dark --color-background is #0d0d0d exactly. One value fixes
      both, and all three headers are now the same colour. */
+  /* Header nav. ONE VALUE, and it must be the same on all three sites:
+     the bar is the same bar, so a reader moving between them should not
+     see the words change colour. #bdc1c6 is the design reference own
+     nav colour (its --secondary). Before this, the docs sites resolved
+     --color-foreground-muted to #5f6368 and the marketing site resolved
+     the same utility to #e8eaed, because its ported reference stylesheet
+     carries an unlayered `a { color: inherit }` that beats any Tailwind
+     utility. Neither was chosen; both were accidents of resolution.
+
+     There is deliberately no active or current variant. */
+  --color-nav: #bdc1c6;
+  --color-nav-hover: #e8eaed;
   --color-ink: #0d0d0d; /* page background */
   /* The reference's --band-alt. Was #13161d, which is blue-shifted:
      the blog index cards read as tinted next to every other card on the

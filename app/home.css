@@ -480,3 +480,25 @@ header a[href^="https://github.com/"] {
      which read as a broken layout rather than a reading measure. */
   margin-inline: auto;
 }
+
+/* ---------------------------------------------------------------------
+ * DEVIATION 7: the shared header's nav links.
+ *
+ * Same cause as deviation 5's GitHub pill, and this is the second time
+ * it has bitten, so it is worth naming plainly: the reference's reset at
+ * the top of this file carries `a { color: inherit }`, it is unlayered,
+ * and it therefore beats EVERY Tailwind utility that sets a colour on an
+ * anchor, whatever the token behind it holds. The utility is generated
+ * and correct; it simply never wins.
+ *
+ * The reset is right for the reference's own markup, where links sit in
+ * running text and should take the surrounding colour. The shared header
+ * is not the reference's markup. Anything anchor-shaped that the shell
+ * renders needs its colour restated here.
+ * ------------------------------------------------------------------ */
+header nav a {
+  color: var(--color-nav);
+}
+header nav a:hover {
+  color: var(--color-nav-hover);
+}

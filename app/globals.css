@@ -616,3 +616,36 @@ body {
 :root[data-theme="dark"] .logo-dark {
   display: block;
 }
+
+/* ---------------------------------------------------------------------
+ * next/font wiring, and theme A mapped onto the reference palette.
+ *
+ * The reference declares --mono/--sans/--display pointing at Google
+ * Fonts. next/font self-hosts Poppins and JetBrains Mono and hands back
+ * its own variables, so those three names are wired here instead. Same
+ * families, same rendering, no third-party request per page load.
+ *
+ * The theme A mapping is the resolution of a real tension. The brief was
+ * to match the reference exactly AND to highlight through the shared
+ * CodeBlock. CodeBlock paints with theme A's tokens, the reference paints
+ * with its own .kw/.type/.str/.com spans, and the two palettes are not
+ * the same. Mapping theme A onto the reference's values means the shared
+ * component produces the reference's colours, so both hold at once.
+ * ------------------------------------------------------------------ */
+:root {
+  --sans: var(--font-poppins), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --display: var(--font-poppins), -apple-system, sans-serif;
+  --mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@theme {
+  /* theme A, repointed at the reference palette. Green is the accent,
+     red is Persian red, yellow is Persian yellow, comments are muted,
+     and the code surface is the reference's own --code. */
+  --color-code-green: #00A693;
+  --color-code-red: #CC2936;
+  --color-code-yellow: #E7A020;
+  --color-code-bg: #17181a;
+  --color-foreground: #e8eaed;
+  --color-foreground-muted: #9aa0a6;
+}

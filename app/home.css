@@ -1,0 +1,363 @@
+/*
+ * home.css -- ported VERBATIM from design/home-reference.html.
+ *
+ * Copied rather than reimplemented in Tailwind utilities, deliberately.
+ * The brief was "exactly, not approximately", and translating a finished
+ * stylesheet into utility classes is precisely where a pixel drifts and
+ * nobody notices. This file and the reference should stay diffable.
+ *
+ * THREE DELIBERATE DEVIATIONS, and there are no others:
+ *
+ * 1. --mono/--sans/--display are not declared here. next/font supplies
+ *    Poppins and JetBrains Mono self-hosted, exposing them as CSS
+ *    variables, so globals.css maps those onto these names. Same
+ *    rendering, no request to fonts.googleapis.com on every page load,
+ *    matching how the docs sites handle fonts.
+ *
+ * 2. The logo path becomes /logo/logo-dark.png. The reference uses a
+ *    relative ../public path so it renders when opened straight off
+ *    disk, which is not a real URL in the app.
+ *
+ * 3. The code panels are rendered by the shared CodeBlock, so their
+ *    syntax colours come from theme A rather than the reference's own
+ *    .kw/.type/.str/.com/.prop spans. globals.css maps theme A's tokens
+ *    onto this palette so the output matches. The classes below are
+ *    kept because the hero terminal still uses them: that block is
+ *    hand-authored ahead of the product (UBI-251) and is not real
+ *    command output, so it is not a CodeBlock.
+ */
+
+  :root {
+    --page:      #0d0d0d;
+    --band-alt:  #151516;
+    --surface:   #2d2e30;
+    --code:      #17181a;
+    --text:      #e8eaed;
+    --secondary: #bdc1c6;
+    --muted:     #9aa0a6;
+    --dim:       #7c8288;
+    --border:    #3c4043;
+    --border-2:  #5f6368;
+    --accent:    #00A693;   /* Persian green, exact */
+    --accent-lt: #00A693;   /* same, no lightening */
+    --red:       #CC2936;   /* Persian red, exact */
+    --yellow:    #E7A020;   /* Persian yellow, exact */
+    --blue:      #4A6BFF;   /* Persian blue lightened for a dark page, same hue, higher value */
+    --radius:    12px;
+        }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--page);
+    color: var(--text);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 48px; }
+  a { color: inherit; text-decoration: none; }
+
+  /* ===== SECTION SEPARATION, device 1 and 2 =====
+     Every band is full bleed. Tones alternate, and each carries a
+     hairline on top so the seam is visible even where two bands of the
+     same tone meet. */
+  .band {
+    background: var(--page);
+    border-top: 0.5px solid var(--border);
+    padding: 76px 0;
+  }
+  .band.alt { background: var(--band-alt); }
+  .band.first { border-top: none; }
+
+  /* ===== device 3, kicker with an accent rule ===== */
+  .kicker {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 13px; font-weight: 500; color: var(--accent);
+    letter-spacing: 0.08em; margin-bottom: 14px;
+  }
+  .kicker::before {
+    content: ""; width: 28px; height: 2px;
+    background: var(--accent); border-radius: 1px; flex-shrink: 0;
+  }
+
+  /* ---------- header ---------- */
+  header { border-bottom: 0.5px solid var(--border); }
+  .header-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 48px; max-width: 1180px; margin: 0 auto;
+  }
+  .logo { display: inline-flex; align-items: center; }
+  .logo img { height: 26px; width: auto; display: block; }
+  /* NOTE: the reference uses a relative path so it renders when opened
+     straight off disk. In the Next app this is /logo/logo-dark.png.
+     logo-dark.png is the light-ink variant, correct on a dark surface.
+     Swap to logo.png if that is the wrong way round. */
+  nav.primary { display: flex; gap: 32px; font-size: 15px; color: var(--secondary); }
+  nav.primary a.active { color: var(--text); }
+  .gh {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 14px; color: #06201b; background: var(--accent);
+    border-radius: 18px; padding: 7px 16px;
+  }
+  .gh svg { width: 16px; height: 16px; fill: currentColor; }
+  .hamburger { display: none; font-size: 20px; color: var(--secondary); }
+
+  /* ---------- hero ---------- */
+  .hero { text-align: center; padding: 88px 0 52px; }
+  h1 { font-family: var(--display); font-size: 40px; font-weight: 500; line-height: 1.2; letter-spacing: -0.02em; margin: 0; }
+  .lede { font-size: 19px; color: var(--secondary); line-height: 1.55; max-width: 680px; margin: 20px auto 34px; }
+  .cta-row { display: flex; gap: 14px; justify-content: center; }
+  .btn { font-size: 15px; padding: 13px 30px; border-radius: 26px; display: inline-block; }
+  .btn-primary { background: var(--accent); color: #06201b; }
+  .btn-ghost { border: 0.5px solid var(--border-2); color: var(--secondary); }
+
+  /* ---------- terminal ---------- */
+  .terminal {
+    /* Full content width, so the hero band reads as wide as every other
+       section rather than sitting in a narrower column of its own. */
+    width: 100%; margin: 0 auto 76px;
+    border: 0.5px solid var(--border); border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--code);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.04) inset,
+      0 24px 60px -12px rgba(0,0,0,0.7),
+      0 0 0 1px rgba(0,166,147,0.08),
+      0 0 80px -30px rgba(0,166,147,0.35);
+  }
+  .terminal-bar {
+    display: flex; align-items: center; gap: 8px; padding: 12px 18px;
+    background: linear-gradient(180deg, #232426 0%, #1c1d1f 100%);
+    border-bottom: 0.5px solid var(--border);
+  }
+  .dot { width: 11px; height: 11px; border-radius: 50%; }
+  .dot:nth-child(1) { background: #d8524a; }
+  .dot:nth-child(2) { background: #d6a63a; }
+  .dot:nth-child(3) { background: #3fa85f; }
+  .terminal-label { font-size: 13px; color: var(--muted); margin-left: 10px; font-family: var(--mono); }
+  .terminal-body {
+    background: var(--code); padding: 22px 26px 26px;
+    font-family: var(--mono); font-size: 13.5px; line-height: 1.95;
+    white-space: pre; overflow-x: auto;
+  }
+  .terminal-note {
+    background: linear-gradient(180deg, rgba(0,166,147,0.06) 0%, rgba(0,166,147,0.02) 100%);
+    padding: 20px 26px 22px;
+    border-top: 0.5px solid rgba(0,166,147,0.18);
+  }
+  .note-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 12px; color: var(--accent-lt); letter-spacing: 0.06em; }
+  .terminal-note p { font-size: 14px; color: var(--secondary); margin: 0 0 12px; line-height: 1.75; }
+  .terminal-note p:last-child { margin-bottom: 0; }
+  .terminal-foot {
+    background: rgba(255,255,255,0.02); padding: 14px 26px;
+    border-top: 0.5px solid var(--border);
+    display: flex; justify-content: space-between; font-size: 13px;
+    color: var(--muted); font-family: var(--mono);
+  }
+
+  /* ---------- stats ---------- */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .stat { text-align: center; }
+  .stat .n { font-family: var(--display); font-size: 42px; font-weight: 500; color: var(--accent); line-height: 1.1; letter-spacing: -0.02em; }
+  /* Non numeric facts sit smaller so the row still reads as one band
+     rather than four competing headlines. */
+  .stat .n.fact { font-size: 30px; line-height: 1.4; }
+  .stat .l { font-size: 14px; color: var(--secondary); margin-top: 6px; }
+
+  /* ---------- headings ---------- */
+  h2 { font-family: var(--display); font-size: 34px; font-weight: 500; margin: 0 0 10px; letter-spacing: -0.01em; }
+  .section-lede { font-size: 17px; color: var(--secondary); line-height: 1.7; max-width: 660px; margin: 0 0 44px; }
+
+  /* ---------- steps ---------- */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .step {
+    position: relative; overflow: hidden;
+    background: var(--band-alt);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 26px 22px 24px;
+  }
+  /* Ghost numeral bottom right, so the eye reads the word first and the
+     sequence second. */
+  .step .ghost {
+    position: absolute; right: 12px; bottom: -18px;
+    font-family: var(--display); font-size: 78px; font-weight: 600;
+    line-height: 1; color: rgba(255,255,255,0.035);
+    pointer-events: none; user-select: none;
+  }
+  .step .cmd { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+  .step h3 { font-family: var(--display); font-size: 20px; font-weight: 500; margin: 0 0 8px; letter-spacing: -0.01em; }
+  .step p { font-size: 14px; color: var(--secondary); margin: 0; line-height: 1.7; position: relative; }
+  /* The one step that reaches a provider is marked, since that
+     distinction is the whole argument of the section. */
+  .step.live { border-color: var(--border); }
+
+  /* ---------- code ---------- */
+  .tabs { display: inline-flex; border: 0.5px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 18px; }
+  .tabs span { font-size: 14px; padding: 8px 20px; color: var(--muted); cursor: pointer; user-select: none; }
+  .tabs span + span { border-left: 0.5px solid var(--border); }
+  .tabs span.on { background: var(--surface); color: var(--text); }
+  pre.code {
+    background: var(--code); border-radius: var(--radius); padding: 26px 30px; margin: 0;
+    font-family: var(--mono); font-size: 14px; line-height: 1.9; overflow-x: auto;
+  }
+  .kw { color: var(--accent-lt); }
+  .str { color: var(--red); }
+  .prop { color: var(--yellow); }
+  .type { color: var(--blue); }
+  .com { color: var(--dim); }
+
+  /* ---------- two authoring columns side by side ---------- */
+  .authoring { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+  .authoring h2 { font-size: 26px; }
+  .authoring .section-lede { font-size: 15px; margin-bottom: 20px; }
+  .authoring pre.code {
+    font-size: 12.5px; padding: 20px 22px;
+    border: 0.5px solid var(--border);
+    /* Fixed, not minimum, so the two columns match exactly regardless
+       of how many lines each sample happens to have. Line height is
+       tightened so 16 lines fit inside without scrolling. */
+    height: 360px;
+    line-height: 1.65;
+    overflow: hidden;
+  }
+  .authoring .note { font-size: 13px; color: var(--muted); margin: 14px 0 0; line-height: 1.7; }
+
+  /* ---------- hcl split ---------- */
+  .split { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 32px; align-items: start; }
+  .split h3 { font-size: 17px; font-weight: 400; margin: 0 0 6px; }
+  .split p { font-size: 14px; color: var(--secondary); margin: 0 0 22px; line-height: 1.75; }
+  .split p:last-child { margin-bottom: 0; }
+
+  /* ---------- ledger ---------- */
+  /* The chain is the point of this section, so it is drawn rather than
+     described: three entries, each pinned to the hash before it. */
+  .chain {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 16px; margin-bottom: 40px;
+  }
+  /* Same gap and the same left inset as the cards below, so the hash
+     pills, their captions and the card text all share one left edge. */
+  .link { position: relative; padding-left: 20px; }
+  .link::after {
+    content: ""; position: absolute; top: 15px; right: -16px; width: 16px;
+    border-top: 1px dashed var(--border-2);
+  }
+  .link:last-child::after { display: none; }
+  .link .node {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 12px; color: var(--yellow);
+    background: var(--band-alt); border: 0.5px solid var(--border);
+    border-radius: 20px; padding: 5px 12px; margin-bottom: 12px;
+  }
+  .link .node .bullet { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .link h4 { font-family: var(--display); font-size: 15px; font-weight: 500; margin: 0 0 4px; }
+  .link p { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.6; }
+
+  .ledger-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 0; }
+  .ledger-grid > div {
+    background: var(--page); border: 0.5px solid var(--border);
+    border-radius: var(--radius); padding: 22px 20px;
+  }
+  .ledger-grid h3 { font-family: var(--display); font-size: 17px; font-weight: 500; margin: 0 0 6px; }
+  .ledger-grid .cmd { font-family: var(--mono); font-size: 12px; color: var(--accent); margin-bottom: 10px; }
+  .ledger-grid p { font-size: 13.5px; color: var(--secondary); margin: 0; line-height: 1.7; }
+
+  /* ---------- theme cards ---------- */
+  .themes { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .theme-card { background: var(--surface); border-radius: var(--radius); padding: 34px; }
+  .theme-card .kicker { color: var(--accent-lt); margin-bottom: 14px; }
+  .theme-card .kicker::before { background: var(--accent-lt); }
+  .theme-card h2 { font-size: 25px; margin-bottom: 14px; }
+  .theme-card p { font-size: 15px; color: var(--secondary); margin: 0 0 20px; line-height: 1.75; }
+  .theme-stats {
+    display: flex; gap: 40px; justify-content: center; text-align: center;
+    padding-top: 20px; border-top: 0.5px solid var(--border);
+  }
+  .theme-stats .n { font-family: var(--display); font-size: 26px; font-weight: 500; color: var(--accent); }
+  .theme-stats .l { font-size: 13px; color: var(--secondary); margin-top: 2px; }
+
+  /* ---------- closing ---------- */
+  .closing { text-align: center; }
+  .closing h2 { font-size: 30px; margin-bottom: 14px; }
+  .closing p { font-size: 16px; color: var(--secondary); line-height: 1.7; max-width: 560px; margin: 0 auto 26px; }
+
+  /* ---------- footer ---------- */
+  footer { border-top: 0.5px solid var(--border); padding: 30px 0 44px; background: var(--page); }
+  .footer-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+  .footer-links { display: flex; gap: 26px; font-size: 14px; color: var(--secondary); }
+  footer p { font-size: 13px; color: var(--muted); margin: 0 0 8px; line-height: 1.7; }
+  footer p:last-child { margin-bottom: 0; }
+
+  /* ================= MOBILE ================= */
+  @media (max-width: 767px) {
+    .wrap { padding: 0 18px; }
+    .header-inner { padding: 14px 18px; }
+    nav.primary, .gh { display: none; }
+    .hamburger { display: block; }
+
+    .band { padding: 40px 0; }
+
+    .hero { text-align: left; padding: 40px 0 30px; }
+    h1 { font-size: 28px; line-height: 1.25; }
+    .lede { font-size: 15px; margin-bottom: 24px; }
+    .cta-row { flex-direction: column; }
+    .btn { text-align: center; padding: 12px 24px; }
+
+    .terminal { margin-bottom: 40px; }
+    .terminal-body { font-size: 11px; padding: 16px 16px 18px; }
+    .terminal-note { padding: 16px; }
+    .terminal-foot { padding: 12px 16px; font-size: 11px; }
+
+    .stats { grid-template-columns: 1fr 1fr; gap: 22px 12px; }
+    .stat .n { font-size: 32px; }
+    .stat .n.fact { font-size: 22px; line-height: 1.4; }
+    .stat .l { font-size: 12px; }
+
+    .kicker { font-size: 12px; margin-bottom: 10px; }
+    .kicker::before { width: 20px; }
+    h2 { font-size: 25px; }
+    .section-lede { font-size: 15px; margin-bottom: 28px; }
+
+    .steps { grid-template-columns: 1fr; gap: 12px; }
+    .step { padding: 20px 18px; }
+    .step h3 { font-size: 18px; }
+    .step p { font-size: 13px; }
+    .step .ghost { font-size: 58px; bottom: -12px; }
+
+    pre.code { font-size: 11px; padding: 16px; }
+    .tabs span { font-size: 13px; padding: 7px 14px; }
+
+    .authoring { grid-template-columns: 1fr; gap: 30px; }
+    .authoring h2 { font-size: 22px; }
+    .authoring pre.code { height: auto; overflow-x: auto; }
+
+    .split { grid-template-columns: 1fr; gap: 20px; }
+    .split h3 { font-size: 16px; }
+    .split p { font-size: 13px; margin-bottom: 18px; }
+
+    .chain { grid-template-columns: 1fr; gap: 18px; margin-bottom: 28px; }
+    .link { padding-left: 16px; }
+    .link::after { display: none; }
+
+    .ledger-grid { grid-template-columns: 1fr; gap: 12px; margin-bottom: 0; }
+    .ledger-grid > div { padding: 18px 16px; }
+    .ledger-grid h3 { font-size: 16px; }
+    .ledger-grid p { font-size: 13px; }
+
+    .themes { grid-template-columns: 1fr; gap: 14px; }
+    .theme-card { padding: 24px 20px; }
+    .theme-card h2 { font-size: 20px; }
+    .theme-card p { font-size: 14px; }
+    .theme-stats { gap: 26px; }
+    .theme-stats .n { font-size: 24px; }
+
+    .closing h2 { font-size: 24px; }
+    .closing p { font-size: 15px; }
+    .closing .cta-row { flex-direction: column; }
+
+    .footer-top { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .footer-links { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  }

@@ -1,7 +1,31 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { Poppins, JetBrains_Mono } from "next/font/google";
 import { THEME_INIT_SCRIPT } from "@ubx/docs-ui";
 import "./globals.css";
+
+// Self-hosted, not a <link> to fonts.googleapis.com. The design
+// reference links them from Google because it has to work as a single
+// file opened off disk. next/font downloads and serves them from our own
+// origin, which is identical rendering with no third-party request on
+// every page load, and matches how the docs sites handle fonts.
+//
+// The weights are exactly the ones the reference asks for: Poppins
+// 400/500/600, JetBrains Mono 400. Requesting more would ship bytes
+// nothing uses.
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-poppins",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: { default: "Ubiquex", template: "%s — Ubiquex" },
@@ -18,7 +42,7 @@ export const metadata: Metadata = {
 // layer in globals.css for why, and for what the real fix is.
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${poppins.variable} ${jetbrainsMono.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>

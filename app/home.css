@@ -14,9 +14,9 @@
  *    rendering, no request to fonts.googleapis.com on every page load,
  *    matching how the docs sites handle fonts.
  *
- * 2. The logo path becomes /logo/logo-dark.png. The reference uses a
- *    relative ../public path so it renders when opened straight off
- *    disk, which is not a real URL in the app.
+ * 2. The logo path becomes /logo/ubiquex.png, the real brand wordmark.
+ *    The reference uses a relative ../public path so it renders when
+ *    opened straight off disk, which is not a real URL in the app.
  *
  * 3. The code panels are rendered by the shared CodeBlock, so their
  *    syntax colours come from theme A rather than the reference's own
@@ -91,9 +91,9 @@
   .logo { display: inline-flex; align-items: center; }
   .logo img { height: 26px; width: auto; display: block; }
   /* NOTE: the reference uses a relative path so it renders when opened
-     straight off disk. In the Next app this is /logo/logo-dark.png.
-     logo-dark.png is the light-ink variant, correct on a dark surface.
-     Swap to logo.png if that is the wrong way round. */
+     straight off disk. In the Next app this is /logo/ubiquex.png, one
+     asset rather than a light/dark pair: the wordmark is brand green on
+     a transparent ground and reads on either palette. */
   nav.primary { display: flex; gap: 32px; font-size: 15px; color: var(--secondary); }
   nav.primary a.active { color: var(--text); }
   .gh {
@@ -475,4 +475,8 @@ header a[href^="https://github.com/"] {
  * ------------------------------------------------------------------ */
 .post {
   max-width: 600px;
+  /* Centred in the 1180px wrap. Capping the width alone left the column
+     hard against the left edge with 480px of empty band beside it,
+     which read as a broken layout rather than a reading measure. */
+  margin-inline: auto;
 }

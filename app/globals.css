@@ -32,9 +32,21 @@
   --color-highlight-bright: #e8404e;
 
   /* Dark surfaces */
-  --color-ink: #0d1117; /* page background */
-  --color-panel: #13161d; /* code panel background */
-  --color-line: #1e2530; /* hairline borders */
+  /* #0d0d0d, not #0d1117. Two things were wrong with the old value at
+     once: it did not match this site's own page, which home.css paints
+     --page: #0d0d0d, so the shared header sat on a visibly different
+     ground from the body below it; and it did not match the docs sites,
+     whose dark --color-background is #0d0d0d exactly. One value fixes
+     both, and all three headers are now the same colour. */
+  --color-ink: #0d0d0d; /* page background */
+  /* The reference's --band-alt. Was #13161d, which is blue-shifted:
+     the blog index cards read as tinted next to every other card on the
+     site, which take the reference's own neutral greys. */
+  --color-panel: #151516; /* raised card and code panel background */
+  /* The reference's --border, for the same reason as --color-panel
+     above: #1e2530 was blue-shifted against the neutral hairlines
+     every band on the home page draws. */
+  --color-line: #3c4043; /* hairline borders */
 
   /* Foreground */
   --color-primary: #f0f6fc; /* body text */
@@ -85,10 +97,16 @@
   /* Nav collapses to the mobile layout below this width. */
   --breakpoint-menu: 860px;
 
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
-    "Liberation Mono", monospace;
+  /* Tailwind's own font tokens, so the font-sans and font-mono utility
+     classes resolve to the same faces the element-level rules use.
+     These listed only OS fallbacks, which meant every element carrying
+     `font-mono` (CodeBlock's own <pre> among them) rendered in
+     ui-monospace while everything styled through --mono rendered in
+     JetBrains Mono. Two monospace faces on one page. */
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular,
+    "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 }
 
 html {
@@ -589,33 +607,6 @@ body {
   --color-code-yellow: var(--color-code-number);
 }
 
-/* The shared Header renders BOTH logo variants unconditionally and
-   relies on the consuming site to hide one. Without these rules both
-   render at once, which is exactly what happened here: the header
-   shipped with two broken images, because the assets were missing too.
-   Copied verbatim from the docs sites so all three behave identically.
-
-   This site is dark-only, so in practice the dark variant always wins.
-   The light-mode rules are kept anyway rather than trimmed: when a light
-   palette is added (see the alias layer above), these already work and
-   nobody has to rediscover that the header needs them. */
-.logo-dark {
-  display: none;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .logo-light {
-    display: none;
-  }
-  :root:not([data-theme="light"]) .logo-dark {
-    display: block;
-  }
-}
-:root[data-theme="dark"] .logo-light {
-  display: none;
-}
-:root[data-theme="dark"] .logo-dark {
-  display: block;
-}
 
 /* ---------------------------------------------------------------------
  * next/font wiring, and theme A mapped onto the reference palette.

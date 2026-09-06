@@ -502,3 +502,38 @@ header nav a {
 header nav a:hover {
   color: var(--color-nav-hover);
 }
+
+/* ---------------------------------------------------------------------
+ * DEVIATION 8: the language tabs are <button>, not <span>.
+ *
+ * The reference has no JavaScript, so it draws its tabs as spans with a
+ * static `.on` class and styles `.tabs span`. The real tabs switch, and
+ * the shared CodeTabs renders real buttons: a control that responds to a
+ * click should be a button, so it is focusable and works from the
+ * keyboard without reimplementing either.
+ *
+ * The selectors below list both rather than replacing span with button,
+ * so the reference still renders correctly when opened straight off disk
+ * and the two files stay diffable. Preflight strips a button's own
+ * appearance, so the reference's declarations are the only ones acting.
+ * ------------------------------------------------------------------ */
+.tabs button {
+  font-size: 14px;
+  padding: 8px 20px;
+  color: var(--muted);
+  cursor: pointer;
+  user-select: none;
+}
+.tabs button + button {
+  border-left: 0.5px solid var(--border);
+}
+.tabs button.on {
+  background: var(--surface);
+  color: var(--text);
+}
+@media (max-width: 767px) {
+  .tabs button {
+    font-size: 13px;
+    padding: 7px 14px;
+  }
+}

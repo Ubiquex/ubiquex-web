@@ -1,6 +1,5 @@
-import { CodeBlock, PageShell } from "@ubx/docs-ui";
+import { CodeBlock, CodeTabs, PageShell } from "@ubx/docs-ui";
 import { Terminal } from "@/components/home/Terminal";
-import { CodeTabs } from "@/components/home/CodeTabs";
 import { NAV, FOOTER } from "@/lib/site";
 import "./home.css";
 
@@ -158,12 +157,18 @@ export default function HomePage() {
               <div className="kicker">AUTHOR</div>
               <h2>Real types. Zero execution.</h2>
               <p className="section-lede">Typed bindings generated from each provider&rsquo;s own schema. The program describes intent and never executes anything.</p>
+              {/* The shared shell, not this site's own copy. That copy was
+                  correct and the provider site's equivalent was not, which
+                  is exactly the split @ubx/docs-ui exists to close.
+                  classNames carry the reference's own .tabs markup, so the
+                  appearance is unchanged. */}
               <CodeTabs
-                labels={["TypeScript", "Go", "Python"]}
-                panels={[
-                  <CodeBlock key="ts" code={TS} lang="typescript" />,
-                  <CodeBlock key="go" code={GO} lang="go" />,
-                  <CodeBlock key="py" code={PY} lang="python" />,
+                defaultLabel="TypeScript"
+                classNames={{ list: "tabs", tabActive: "on", panel: "code-panel" }}
+                tabs={[
+                  { label: "TypeScript", panel: <CodeBlock code={TS} lang="typescript" /> },
+                  { label: "Go", panel: <CodeBlock code={GO} lang="go" /> },
+                  { label: "Python", panel: <CodeBlock code={PY} lang="python" /> },
                 ]}
               />
             </div>
@@ -171,7 +176,10 @@ export default function HomePage() {
               <div className="kicker">COMPOSE</div>
               <h2>Without a language to learn</h2>
               <p className="section-lede">The complexity lives in the blueprint, where a real language earns its keep. Calling one is declarative.</p>
-              <CodeTabs labels={["HCL"]} panels={[<CodeBlock key="hcl" code={HCL} lang="hcl" />]} />
+              <CodeTabs
+                classNames={{ list: "tabs", tabActive: "on", panel: "code-panel" }}
+                tabs={[{ label: "HCL", panel: <CodeBlock code={HCL} lang="hcl" /> }]}
+              />
             </div>
           </div>
         </div>

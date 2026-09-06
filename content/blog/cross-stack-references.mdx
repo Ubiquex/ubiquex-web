@@ -1,0 +1,209 @@
+---
+title: "Your stacks still need an order. They should not need you to wire the values."
+date: "2026-09-06"
+description: "Terraform, Pulumi and Terragrunt each make you hand-wire values between stacks, and none of them tells you when the stack you read from moved underneath you. ubx pins the reference and refuses to accept a proposal built against a moved neighbour."
+---
+
+Every platform team running infrastructure at scale hits the same wall. You
+have a handful of stacks that must be applied in a specific order: networking
+first, then the cluster, then the add-ons, then GitOps.
+
+```
+networking -> cluster -> addons -> gitops
+```
+
+`networking` provisions VPCs and subnets. `cluster` needs those subnet IDs to
+place the EKS cluster. `addons` needs the cluster endpoint to install Helm
+charts against it. `gitops` needs the cluster credentials to register ArgoCD.
+
+Two separate problems live in that arrow. The first is **what order to run
+things in**. The second is **how a value gets from one stack into the next**,
+and what happens when the stack you read from changes after you read it.
+
+Most of the argument about multi-stack infrastructure is about the first
+problem. The second one is where the outages come from.
+
+## The way it works today
+
+### Terraform: remote state, read at apply time
+
+Terraform's built-in answer is `terraform_remote_state`:
+
+```hcl
+data "terraform_remote_state" "networking" {
+  backend = "s3"
+  config = {
+    bucket = "myorg-tf-state"
+    key    = "networking/dev/terraform.tfstate"
+    region = "eu-west-1"
+  }
+}
+
+resource "aws_eks_cluster" "this" {
+  vpc_config {
+    subnet_ids = data.terraform_remote_state.networking.outputs.private_subnet_ids
+  }
+}
+```
+
+This works, and it has a property worth naming: the read happens **at apply
+time**, against whatever is in that state file at that moment. If somebody
+applied `networking` twenty minutes ago and replaced the subnets, your plan
+output and your apply disagree, and nothing tells you. The value you reviewed
+is not necessarily the value you applied.
+
+You also have to publish an `outputs` block for every value another stack
+needs, which turns your stack's internals into a public interface.
+
+### Pulumi: stack references, same timing
+
+Pulumi's `StackReference` is the same shape with better types:
+
+```typescript
+const net = new pulumi.StackReference("myorg/networking/dev");
+const subnets = net.getOutput("privateSubnetIds");
+```
+
+Typed, and still read at run time against the current state of the other
+stack. The type system knows the value is a `Output<T>`. It does not know
+whether the stack it came from moved since you last looked.
+
+### Terragrunt: order as configuration
+
+Terragrunt makes the ordering explicit, which is a real improvement:
+
+```hcl
+dependency "networking" {
+  config_path = "../networking"
+}
+
+inputs = {
+  subnet_ids = dependency.networking.outputs.private_subnet_ids
+}
+```
+
+`run-all apply` walks the graph. The dependency edges are declared once and
+the tool honours them. What it does not give you is any guarantee about the
+value itself between the moment you reviewed a plan and the moment it applied.
+
+## What ubx does differently, and what it does not do
+
+Start with the honest part, because it is the part the old version of this
+post got wrong.
+
+**ubx does not orchestrate your stack order.** There is no `apply-all`, no
+cross-stack runner, no graph walker over stacks. Every ubx command operates on
+one stack. If you have four stacks with a linear dependency, you still run
+them in order, in whatever CI you already have. Terragrunt genuinely solves a
+problem here that ubx does not attempt.
+
+What ubx changes is the second problem: the value, and whether you can trust
+that it did not move.
+
+A cross-stack reference is a string in the resource you are authoring:
+
+```hcl
+stack = "platform"
+
+blueprint "service" "api" {
+  source   = "../blueprints/service"
+  replicas = 3
+  vpc_id   = "@network.aws_vpc.main.id"
+}
+```
+
+The form is `"@<stack>.<type>.<name>.<attribute>"`, and it is identical from
+the SDK, from a hand-written intent file, and from HCL. `ubx addresses` prints
+the copy-paste-ready form for every address in a stack, so you are not guessing
+at another team's resource names:
+
+```
+networking.aws_vpc.main
+  provider: hashicorp/aws@6.54.0
+  @networking.aws_vpc.main.id (computed, known after ship)
+  @networking.aws_vpc.main.cidr_block (always present)
+```
+
+Referencing one from the `payments` stack resolves it against the neighbour's
+ledger at plan time, so the value you review is concrete:
+
+```
+Plan  payments · from pay.json
+
+  + aws_vpc.payments create
+      cidr_block: "10.0.0.0/16"
+
+delta: +1 create(s), ~0 change(s), -0 terminate(s)
+
+blast radius: +1 ~0 -0
+
+ubx-proposal: 74a0863b4c7b
+next: ubx ship 74a0863b4c7b
+```
+
+A cross-stack reference needs no `outputs` block. ubx does have outputs, and
+they are a separate mechanism for a separate job. What a `@stack` reference
+gives you is the ability to read a neighbour's resource without that neighbour
+publishing an interface for you, or knowing you are reading from it at all.
+You address its resources the same way you address your own.
+
+### The part that matters: the reference is pinned
+
+When ubx resolves your proposal, it records the neighbour ledger's own head at
+that moment, as a `cross_stack_pin` entry on the proposal, alongside where to
+re-derive that head from.
+
+At accept time it re-derives the neighbour's current head and compares. If the
+neighbour moved, acceptance fails:
+
+```
+$ ubx accept 74a0863b4c7b
+accept: resolve: cross-stack pin is stale -- the neighbor ledger has
+advanced since this proposal was resolved: networking.aws_vpc.main
+(ledger ../networking) pinned at ee9ec4e559e0..., now bb1ee40e592f...
+$ echo $?
+1
+```
+
+It names the reference, the neighbour, the head it was pinned to and the head
+that is there now.
+
+Every terminal block in this post was produced by running `ubx` just now, but
+against a hermetic test fixture standing in for the AWS provider rather than
+the real one. The ubx behaviour is real. The thing on the other end of the
+plugin socket is not, so no AWS resources were created to write this.
+
+That is the whole difference. Terraform and Pulumi both read the other stack's
+current value at apply time and proceed. ubx records what it read, and refuses
+to accept a proposal built against a world that has since changed. Not a
+warning. A refusal, with its own exit code, so CI stops.
+
+The failure mode this removes is specific and common: you plan `cluster`
+against `networking`, someone lands a change to `networking`, your apply goes
+through against subnets that no longer exist or no longer mean what they meant.
+With a pin, that apply does not happen. You re-resolve and look again.
+
+## What it costs
+
+Two constraints worth knowing before you reach for this.
+
+**Cross-stack references need a shared ledger base.** Stacks resolve each
+other against a common remote store, S3, GCS or Azure Blob. A purely
+git-local ledger has no base to resolve a neighbour against, and ubx refuses
+the reference rather than guessing. Stacks under a different base need an
+explicit `[ledger.external]` entry.
+
+**A pin makes staleness visible, which means you will see it.** If your
+`networking` stack changes often and your `cluster` proposals are long-lived,
+you will hit stale pins. That is the mechanism working, but it is a real
+change in workflow compared to a tool that silently reads the latest value.
+
+## What this is not
+
+This does not replace Terragrunt's ordering. If your problem is "which stack
+runs first", ubx does not answer it and you should keep whatever answers it
+today.
+
+It answers the narrower question of whether the value you reviewed is the
+value you applied, which is the one that tends to be found out in production
+rather than in review.

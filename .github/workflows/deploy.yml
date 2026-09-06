@@ -26,9 +26,9 @@ permissions:
   id-token: write
 
 env:
-  BUCKET: REPLACE_ME_BUCKET
-  DISTRIBUTION_ID: REPLACE_ME_DISTRIBUTION_ID
-  DEPLOY_ROLE: REPLACE_ME_ROLE_ARN
+  BUCKET: ubiquex-web-site
+  DISTRIBUTION_ID: E27DI3NROZ7508
+  DEPLOY_ROLE: arn:aws:iam::839333509514:role/ubiquex-web-deploy
   AWS_REGION: us-east-1
 
 jobs:

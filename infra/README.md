@@ -5,17 +5,18 @@ Committed before it is applied, matching both docs sites.
 
 ## Status
 
-**Not created yet.** `deploy.yml` refuses to run while its identifiers
-are placeholders.
+All created. DNS is untouched: `ubiquex.io` still resolves to GitHub
+Pages and the Astro site still serves it.
 
-| Resource | State |
-|---|---|
-| S3 bucket `ubiquex-web-site` | not created |
-| Origin Access Control | not created |
-| CloudFront Function `ubiquex-web-rewrite` | not created |
-| CloudFront distribution | not created |
-| ACM certificate for `ubiquex.io` + `www.ubiquex.io` | not requested |
-| IAM deploy role `ubiquex-web-deploy` | not created |
+| Resource | Identifier | State |
+|---|---|---|
+| S3 bucket | `ubiquex-web-site` | created, private, AES256 |
+| Origin Access Control | `E1L18662UV0XRX` | created |
+| CloudFront Function | `ubiquex-web-rewrite` | created, **LIVE** |
+| CloudFront distribution | `E27DI3NROZ7508` (`d2o32v7b3ub6i0.cloudfront.net`) | created |
+| Bucket policy | conditioned on that distribution | applied |
+| IAM deploy role | `ubiquex-web-deploy` | created, scoped |
+| ACM certificate | `edfc84d1-a928-4dd9-a926-594463f9408e` | **PENDING_VALIDATION** |
 
 ## The apex, which is the part that differs from the docs sites
 

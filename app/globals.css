@@ -588,3 +588,31 @@ body {
   --color-code-red: var(--color-code-string);
   --color-code-yellow: var(--color-code-number);
 }
+
+/* The shared Header renders BOTH logo variants unconditionally and
+   relies on the consuming site to hide one. Without these rules both
+   render at once, which is exactly what happened here: the header
+   shipped with two broken images, because the assets were missing too.
+   Copied verbatim from the docs sites so all three behave identically.
+
+   This site is dark-only, so in practice the dark variant always wins.
+   The light-mode rules are kept anyway rather than trimmed: when a light
+   palette is added (see the alias layer above), these already work and
+   nobody has to rediscover that the header needs them. */
+.logo-dark {
+  display: none;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .logo-light {
+    display: none;
+  }
+  :root:not([data-theme="light"]) .logo-dark {
+    display: block;
+  }
+}
+:root[data-theme="dark"] .logo-light {
+  display: none;
+}
+:root[data-theme="dark"] .logo-dark {
+  display: block;
+}

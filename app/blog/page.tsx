@@ -14,7 +14,7 @@ export default function BlogIndexPage() {
   const posts = getAllPosts();
 
   return (
-    <PageShell nav={NAV} footer={FOOTER} showThemeToggle={false}>
+    <PageShell nav={NAV} footer={FOOTER} showThemeToggle={false} githubUrl="https://github.com/Ubiquex/ubiquex">
       <Container>
         <section className="py-20">
           <h1 className="text-4xl font-semibold tracking-tight text-primary">Blog</h1>

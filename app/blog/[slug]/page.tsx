@@ -41,7 +41,7 @@ export default async function BlogPostPage({
   );
 
   return (
-    <PageShell nav={NAV} footer={FOOTER} showThemeToggle={false}>
+    <PageShell nav={NAV} footer={FOOTER} showThemeToggle={false} githubUrl="https://github.com/Ubiquex/ubiquex">
       <Container width="prose">
         <article className="py-20">
           <header className="mb-10">

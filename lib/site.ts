@@ -17,6 +17,10 @@ export const FOOTER = {
   tagline:
     "ubx is early. The ledger format and CLI surface are still moving, and versions below 1.0 may break.",
   links: [
+    // Blog is here as well as in the header. It is this site's only
+    // content section, and with it missing from the footer the migrated
+    // post had exactly one route in.
+    { label: "Blog", href: "/blog/" },
     { label: "Documentation", href: "https://docs.ubiquex.io" },
     { label: "GitHub", href: "https://github.com/Ubiquex" },
     { label: "License", href: "https://github.com/Ubiquex/ubiquex-web/blob/main/LICENSE" },

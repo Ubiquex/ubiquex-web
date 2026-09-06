@@ -1,0 +1,72 @@
+name: ci
+
+# There was no PR check here at all, and the reason is worth recording.
+#
+# This repo had a "Deploy to GitHub Pages" workflow in deploy.yml. The
+# CloudFront deploy workflow was added under the same filename, so it
+# REPLACED the Pages one rather than sitting beside it. Neither ever ran
+# on a pull request: both trigger on push to main. So every PR merged
+# with no check having run.
+#
+# That is how a lockfile mismatch reached main: package.json was bumped
+# to a new @ubx/docs-ui minor while the lockfile kept its old pin, and
+# nothing ran `npm ci` until the deploy did, after the merge.
+#
+# Deliberately does NOT duplicate deploy.yml. This runs the things that
+# can be checked without credentials; deploy.yml keeps its own guards for
+# the things that only matter at deploy time.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      # npm ci, not npm install: it fails on a package.json/lockfile
+      # mismatch instead of silently resolving one, which is the exact
+      # failure this workflow exists to catch before merge.
+      - run: npm ci
+
+      - run: npm run typecheck
+      - name: CloudFront rewrite function tests
+        # Plain node, no AWS. Reads infra/cloudfront/rewrite.js itself, so
+        # what is tested is the exact bytes that get uploaded.
+        run: npm test
+      - name: Distribution config is within CloudFront's limits
+        run: node infra/check-distribution-config.mjs
+      - run: npm run build
+
+      - name: Confirm the export actually produced pages
+        run: |
+          set -euo pipefail
+          test -f out/index.html || { echo "out/index.html missing"; exit 1; }
+          n="$(find out -name '*.html' | wc -l | tr -d ' ')"
+          echo "exported HTML pages: $n"
+          [ "$n" -ge 4 ] || { echo "only $n pages exported"; exit 1; }
+
+      - name: Every blog post is reachable from the blog index
+        # The migrated post shipped with no route in from the footer, and
+        # nothing noticed. A post that exists and cannot be reached is
+        # the failure worth catching here.
+        run: |
+          set -euo pipefail
+          fail=0
+          for f in content/blog/*.mdx; do
+            slug="$(basename "$f" .mdx)"
+            grep -q "/blog/$slug" out/blog/index.html || { echo "not linked from the blog index: $slug"; fail=1; }
+            test -f "out/blog/$slug/index.html" || { echo "no exported page: $slug"; fail=1; }
+          done
+          [ "$fail" -eq 0 ] && echo "every post is linked and exported"
+          exit "$fail"

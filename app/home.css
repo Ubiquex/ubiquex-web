@@ -300,7 +300,11 @@
 
     .band { padding: 40px 0; }
 
-    .hero { text-align: left; padding: 40px 0 30px; }
+    /* Centred, matching desktop. This said `left` and that was wrong:
+       a hero that centres on a wide screen and left-aligns on a narrow
+       one reads as two different pages. Corrected in the reference and
+       here together. */
+    .hero { text-align: center; padding: 40px 0 30px; }
     h1 { font-size: 28px; line-height: 1.25; }
     .lede { font-size: 15px; margin-bottom: 24px; }
     .cta-row { flex-direction: column; }
@@ -358,6 +362,117 @@
     .closing p { font-size: 15px; }
     .closing .cta-row { flex-direction: column; }
 
-    .footer-top { flex-direction: column; align-items: flex-start; gap: 16px; }
-    .footer-links { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .footer-top { flex-direction: column; align-items: center; gap: 16px; }
+    /* Centred for the same reason as the hero above. */
+    footer .wrap { text-align: center; }
+    .footer-links { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; justify-items: center; }
   }
+
+/* ---------------------------------------------------------------------
+ * The reference styles `pre.code`. CodeBlock emits
+ *   <div class="overflow-x-auto rounded-2xl bg-code-bg p-4"><pre class="shiki">
+ * so there are ZERO pre.code elements on the page and none of those
+ * rules applied. That is why the two authoring columns had no border,
+ * different heights, a 16px radius instead of 12px, and why the Go and
+ * Python panels pushed the layout wide on a phone instead of scrolling.
+ *
+ * These re-state the reference's own values against the markup that is
+ * actually there. If the reference's pre.code rules change, change these
+ * with them.
+ * ------------------------------------------------------------------ */
+.authoring .code-panel > div {
+  background: var(--code);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  font-size: 12.5px;
+  line-height: 1.65;
+  /* Fixed, not minimum, exactly as the reference says: the two columns
+     match regardless of how many lines each sample happens to have. */
+  height: 360px;
+  overflow-x: auto;
+}
+
+/* A grid child defaults to min-width:auto, so it refuses to shrink below
+   its content. Without this the Go panel measured 521px inside a 390px
+   viewport and pushed the whole page wide rather than scrolling inside
+   its own box. */
+.authoring > div,
+.authoring .code-panel { min-width: 0; }
+
+/* The reference's own mobile block sets `pre.code { font-size: 11px;
+   padding: 16px }`, but that rule never reaches these two panels:
+   `.authoring pre.code` is (0,1,1) and outranks the bare `pre.code` at
+   (0,0,2), so the authoring samples stay at 12.5px/20px 22px at every
+   width. Only the height release applies. Measured, not read: the
+   reference's panels are 372px and 351px tall at 390, not 360. */
+@media (max-width: 767px) {
+  .authoring .code-panel > div {
+    height: auto;
+  }
+}
+
+/* ---------------------------------------------------------------------
+ * DEVIATION 5: the header's GitHub pill and the footer's mobile
+ * centring, both retargeted at the shared shell's real markup.
+ *
+ * The reference writes its own header and footer inline, so it styles
+ * `.gh` and `footer .wrap`. This site renders @ubx/docs-ui's Header and
+ * Footer instead, which emit neither class, so both of the reference's
+ * rules above are inert here. They are left in place rather than edited
+ * out, so the ported body stays diffable against the reference; these
+ * two rules are what actually paint.
+ * ------------------------------------------------------------------ */
+
+/* The pill paints itself bg-primary / text-primary-foreground, which is
+   the brand green on both docs sites. Here `--color-primary` is body
+   text, the token collision globals.css records rather than resolves.
+   Overriding the token for this one element keeps the shared
+   component's contract intact; restyling the pill from outside would
+   not. #06201b and --accent are the reference's own .gh colours. */
+header a[href^="https://github.com/"] {
+  --color-primary: var(--accent);
+  /* `color` is set outright rather than through the token, unlike the
+     background above. The reference's own reset at the top of this file
+     carries `a { color: inherit }`, which is unlayered and so beats
+     every Tailwind utility including text-primary-foreground no matter
+     what the token holds. Setting the token alone left the pill's text
+     at --text and looked like the override had not applied at all. */
+  --color-primary-foreground: #06201b;
+  color: #06201b;
+}
+
+/* docs-ui's Footer already stacks and centres its flex row below 640px,
+   but the maturity line is a block whose own text still sets flush
+   left once it wraps onto two lines, which at 390 it does. */
+@media (max-width: 767px) {
+  footer > div {
+    text-align: center;
+  }
+}
+
+/* ---------------------------------------------------------------------
+ * DEVIATION 6: the blog post's reading measure.
+ *
+ * The post page takes the home page's .wrap, so the band, the header
+ * and the footer all line up with every other page at 1180px. The prose
+ * inside it does not want that width: at 18px, a 1084px column runs to
+ * roughly 120 characters a line, about double what is comfortable to
+ * read.
+ *
+ * Page width and reading measure are different things. 600px is tuned
+ * against the rendered page rather than assumed: characters per line
+ * were counted with a Range walked one character at a time, watching
+ * for the line box's top to change, not estimated from an em width.
+ * 660px, which would have matched the max-width the reference gives
+ * .section-lede, still ran to a median 81. 600px lands at a median 70,
+ * longest 76. At 390 the wrap is the narrower constraint and this cap
+ * does nothing.
+ *
+ * The cap sits on the article rather than on p, so the title, the date
+ * and the all-posts link share the column and the left edge is one
+ * line down the page.
+ * ------------------------------------------------------------------ */
+.post {
+  max-width: 600px;
+}

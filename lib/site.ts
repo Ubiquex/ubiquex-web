@@ -14,8 +14,7 @@ export const NAV: NavLink[] = [
 ];
 
 export const FOOTER = {
-  tagline:
-    "ubx is early. The ledger format and CLI surface are still moving, and versions below 1.0 may break.",
+  tagline: "ubx is in an early stage and actively under development.",
   links: [
     // Blog is here as well as in the header. It is this site's only
     // content section, and with it missing from the footer the migrated

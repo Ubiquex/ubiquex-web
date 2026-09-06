@@ -343,7 +343,11 @@
 
     .band { padding: 40px 0; }
 
-    .hero { text-align: left; padding: 40px 0 30px; }
+    /* Centred, matching desktop. This said `left` and that was wrong:
+       a hero that centres on a wide screen and left-aligns on a narrow
+       one reads as two different pages. Corrected in the reference and
+       here together. */
+    .hero { text-align: center; padding: 40px 0 30px; }
     h1 { font-size: 28px; line-height: 1.25; }
     .lede { font-size: 15px; margin-bottom: 24px; }
     .cta-row { flex-direction: column; }
@@ -401,8 +405,10 @@
     .closing p { font-size: 15px; }
     .closing .cta-row { flex-direction: column; }
 
-    .footer-top { flex-direction: column; align-items: flex-start; gap: 16px; }
-    .footer-links { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .footer-top { flex-direction: column; align-items: center; gap: 16px; }
+    /* Centred for the same reason as the hero above. */
+    footer .wrap { text-align: center; }
+    .footer-links { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; justify-items: center; }
   }
 </style>
 </head>

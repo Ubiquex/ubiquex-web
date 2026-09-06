@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { PageShell } from "@ubx/docs-ui";
+import "@/app/home.css";
 import { NAV, FOOTER } from "@/lib/site";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Container } from "@/components/ui/Container";
 import { getAllPosts, getPost, formatDate } from "@/lib/posts";
 
 type Params = { slug: string };
@@ -41,9 +41,16 @@ export default async function BlogPostPage({
   );
 
   return (
-    <PageShell nav={NAV} footer={FOOTER} showThemeToggle={false} githubUrl="https://github.com/Ubiquex/ubiquex">
-      <Container width="prose">
-        <article className="py-20">
+    <PageShell
+      nav={NAV}
+      footer={FOOTER}
+      showThemeToggle={false}
+      githubUrl="https://github.com/Ubiquex/ubiquex"
+      fullBleed
+    >
+      <div className="band first">
+        <div className="wrap">
+        <article className="post py-20">
           <header className="mb-10">
             <time
               dateTime={post.date}
@@ -68,7 +75,8 @@ export default async function BlogPostPage({
             </Link>
           </footer>
         </article>
-      </Container>
+        </div>
+      </div>
     </PageShell>
   );
 }

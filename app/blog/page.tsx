@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PageShell } from "@ubx/docs-ui";
+import "@/app/home.css";
 import { NAV, FOOTER } from "@/lib/site";
-import { Container } from "@/components/ui/Container";
 import { Card } from "@/components/ui/Card";
 import { getAllPosts, formatDate } from "@/lib/posts";
 
@@ -14,8 +14,15 @@ export default function BlogIndexPage() {
   const posts = getAllPosts();
 
   return (
-    <PageShell nav={NAV} footer={FOOTER} showThemeToggle={false} githubUrl="https://github.com/Ubiquex/ubiquex">
-      <Container>
+    <PageShell
+      nav={NAV}
+      footer={FOOTER}
+      showThemeToggle={false}
+      githubUrl="https://github.com/Ubiquex/ubiquex"
+      fullBleed
+    >
+      <div className="band first">
+        <div className="wrap">
         <section className="py-20">
           <h1 className="text-4xl font-semibold tracking-tight text-primary">Blog</h1>
           <p className="mt-3 text-muted">Notes from the Ubiquex team.</p>
@@ -43,7 +50,8 @@ export default function BlogIndexPage() {
             </ul>
           )}
         </section>
-      </Container>
+        </div>
+      </div>
     </PageShell>
   );
 }

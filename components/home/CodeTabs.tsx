@@ -43,7 +43,7 @@ export function CodeTabs({
         ))}
       </div>
       {panels.map((p, i) => (
-        <div key={i} hidden={i !== active}>
+        <div key={i} className="code-panel" hidden={i !== active}>
           {p}
         </div>
       ))}

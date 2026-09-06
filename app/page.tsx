@@ -14,10 +14,15 @@ import { NAV, FOOTER } from "@/lib/site";
 // flipped when one exists.
 export default function HomePage() {
   return (
-    <PageShell nav={NAV} footer={FOOTER} showThemeToggle={false}>
+    <PageShell
+      nav={NAV}
+      footer={FOOTER}
+      showThemeToggle={false}
+      githubUrl="https://github.com/Ubiquex/ubiquex"
+    >
       <Container className="pt-16 pb-20">
         <h1 className="max-w-3xl text-4xl font-medium leading-tight text-primary md:text-5xl">
-          Every infrastructure change, <span className="text-brand-bright">recorded and signed</span>
+          <span className="text-brand-bright">AI-Native</span> Infrastructure Management
         </h1>
         <p className="mt-5 max-w-2xl text-lg leading-relaxed text-body">
           ubx turns a change into a typed, hashed proposal you read before it happens.

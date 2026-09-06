@@ -450,3 +450,29 @@ header a[href^="https://github.com/"] {
     text-align: center;
   }
 }
+
+/* ---------------------------------------------------------------------
+ * DEVIATION 6: the blog post's reading measure.
+ *
+ * The post page takes the home page's .wrap, so the band, the header
+ * and the footer all line up with every other page at 1180px. The prose
+ * inside it does not want that width: at 18px, a 1084px column runs to
+ * roughly 120 characters a line, about double what is comfortable to
+ * read.
+ *
+ * Page width and reading measure are different things. 600px is tuned
+ * against the rendered page rather than assumed: characters per line
+ * were counted with a Range walked one character at a time, watching
+ * for the line box's top to change, not estimated from an em width.
+ * 660px, which would have matched the max-width the reference gives
+ * .section-lede, still ran to a median 81. 600px lands at a median 70,
+ * longest 76. At 390 the wrap is the narrower constraint and this cap
+ * does nothing.
+ *
+ * The cap sits on the article rather than on p, so the title, the date
+ * and the all-posts link share the column and the left edge is one
+ * line down the page.
+ * ------------------------------------------------------------------ */
+.post {
+  max-width: 600px;
+}

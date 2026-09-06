@@ -50,7 +50,7 @@ export default async function BlogPostPage({
     >
       <div className="band first">
         <div className="wrap">
-        <article className="py-20">
+        <article className="post py-20">
           <header className="mb-10">
             <time
               dateTime={post.date}

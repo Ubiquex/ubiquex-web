@@ -10,10 +10,32 @@
 // one of those decisions. The SDK and HCL panels below DO use CodeBlock,
 // because there the colouring genuinely is lexical.
 //
-// DELIBERATELY AHEAD OF THE BINARY. The cost delta, the invariants line
-// and the SUMMARY block are not output ubx produces today. That is
-// tracked as UBI-251 and the design leads the product here on purpose.
-// Do not "correct" this to real `ubx plan` output.
+// UBI-251, RESOLVED. This block used to carry three things ubx did not
+// produce, on the arrangement that the design led the product. Two of
+// them turned out to be claims the binary cannot make, so the design
+// changed instead, which was the other half of that arrangement.
+//
+// The SUMMARY block is real now. `ubx plan` renders an authored intent's
+// summary sentence under the header, gated on the intent's source kind
+// so the mechanical templates scan and restore write never print.
+//
+// The cost delta line is gone. Every writer of CostDelta sets a literal
+// 0 and there is no pricing source in the tree, so the binary now
+// renders no cost line at all rather than "$0/mo". A figure here would
+// have promised something nothing can compute.
+//
+// The invariants line is gone. That field has no writer and no renderer,
+// and the policy engine behind it is held under UBI-118 with the shape
+// of a policy result explicitly undecided. Drawing it here would have
+// settled that design question by accident, in a marketing page.
+//
+// The summary's second paragraph went with them, because its first
+// sentence was a cost claim. Its second, about the VPC and the
+// cross-stack pin, is genuinely knowable and could be folded into the
+// paragraph above if wanted.
+//
+// Still hand-coloured, per the note above. Keep in step with
+// design/home-reference.html, which carries the identical block.
 export function Terminal() {
   return (
     <div className="terminal">
@@ -38,11 +60,7 @@ export function Terminal() {
         {"     db-access     "}<span className="str">1 rule added</span>
         {`\n\n`}
         <span className="com">blast radius</span>{"  "}<span className="kw">+3</span>{" "}
-        <span className="prop">~1</span> <span className="str">-0</span>{"\n"}
-        <span className="com">cost delta</span>{"    "}<span className="str">+$244.00 / month</span>
-        {"   "}<span className="com">(current $1,118 → $1,362)</span>{"\n"}
-        <span className="com">invariants</span>{"    "}<span className="kw">3 passed</span>
-        {"   "}<span className="com">never-public · eu-west-1 · cost ceiling</span>
+        <span className="prop">~1</span> <span className="str">-0</span>
       </div>
       <div className="terminal-note">
         <div className="note-head">&#9670; SUMMARY</div>
@@ -51,11 +69,6 @@ export function Terminal() {
           zone, plus a settlement queue holding four days of messages. The existing
           security group gains one ingress rule scoped to the new database, so nothing
           becomes publicly reachable.
-        </p>
-        <p>
-          The replica is the largest share of the cost increase. Both instances sit
-          inside the existing VPC, pinned to the network stack at head{" "}
-          <span style={{ fontFamily: "var(--mono)", color: "var(--yellow)" }}>4b1e77</span>.
         </p>
       </div>
       <div className="terminal-foot">

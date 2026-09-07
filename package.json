@@ -9,7 +9,8 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test": "node --test \"infra/**/*.test.mjs\""
+    "test": "node --test \"infra/**/*.test.mjs\"",
+    "check:size": "node scripts/check-export-size.mjs"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
